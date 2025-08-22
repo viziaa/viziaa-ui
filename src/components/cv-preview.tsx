@@ -42,12 +42,12 @@ export function CVPreview({ cvData }: any) {
           className="w-28 h-28 rounded-full object-cover border-4 border-white shadow-md"
         />
         <div>
-          <h1 className="text-2xl font-serif">{user?.fullname}</h1>
+          <h1 className="text-2xl font-serif">{cvData.user.fullname}</h1>
           <p className="text-gray-600">
-            {user?.phone_number} | {user?.email}
+            {cvData.user.phone_number} | {cvData.user.email}
           </p>
           <p className="font-medium mt-1">
-            {user?.address}, {user?.city}, {user?.region}
+            {cvData.user.address}, {cvData.user.city}, {cvData.user.region}
           </p>
         </div>
       </div>
@@ -56,7 +56,7 @@ export function CVPreview({ cvData }: any) {
         <h2 className="text-lg font-bold border-b pb-1 mb-2">
           Tentang Saya
         </h2>{" "}
-        <p className="text-gray-700 leading-relaxed">{user?.about}</p>{" "}
+        <p className="text-gray-700 leading-relaxed">{cvData.user.about}</p>{" "}
       </section>{" "}
       {/* Pendidikan */}{" "}
       <section className="mb-6">
@@ -110,28 +110,33 @@ export function CVPreview({ cvData }: any) {
 }
 
 export default function CVPreview2({ cvData }: { cvData: any }) {
-  const [user, setUser] = useState<User | null>(null);
+  // const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    const fetchCV = async () => {
-      try {
-        const Aresponse = await api.get("/user");
-        setUser(Aresponse.data); // Simpan objek user
-      } catch (error) {
-        console.error("Error fetching CV data:", error);
-        setUser(null);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCV = async () => {
+  //     try {
+  //       const Aresponse = await api.get("/user");
+  //       setUser(Aresponse.data); // Simpan objek user
+  //     } catch (error) {
+  //       console.error("Error fetching CV data:", error);
+  //       setUser(null);
+  //     }
+  //   };
 
-    fetchCV();
-  }, []);
+  //   fetchCV();
+  // }, []);
 
   return (
-    <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+    <div
+    style={{
+    fontFamily: cvData.font || "sans-serif",
+    color:"#d51a52", // default gray-800
+  }}
+    className={"w-full mx-auto bg-white rounded-xl shadow-lg overflow-hidden"}>
       {/* Header */}
-      <div className="bg-blue-900 text-white p-8 flex justify-between items-center">
+      <div className="bg-blue-900 text-white p-8 flex  justify-between items-center" style={{backgroundColor:cvData.color || "#000000"}}>
         <div>
-          <h1 className="text-3xl font-extrabold">{user?.fullname}</h1>
+          <h1 className="text-3xl font-extrabold">{cvData.user.fullname}</h1>
         </div>
         <img
           src={
@@ -149,18 +154,18 @@ export default function CVPreview2({ cvData }: { cvData: any }) {
         <section>
           <h2 className="text-blue-900 font-bold mb-2">DATA PRIBADI</h2>
           <div className="text-gray-800 space-y-1">
-            <p>Nama: {user?.fullname}</p>
-            <p>Tanggal Lahir: {user?.birthdate}</p>
-            <p>Alamat: {user?.address}</p>
-            <p>No. Handphone: {user?.phone_number}</p>
-            <p>Email: {user?.email}</p>
+            <p>Nama: {cvData.user.fullname}</p>
+            <p>Tanggal Lahir: {cvData.user.birthdate}</p>
+            <p>Alamat: {cvData.user.address}</p>
+            <p>No. Handphone: {cvData.user.phone_number}</p>
+            <p>Email: {cvData.user.email}</p>
           </div>
         </section>
 
         {/* Tentang Saya */}
         <section>
           <h2 className="text-blue-900 font-bold mb-2">TENTANG SAYA</h2>
-          <p className="text-gray-700 leading-relaxed">{user?.about}</p>
+          <p className="text-gray-700 leading-relaxed">{cvData.user.about}</p>
         </section>
 
         {/* Pendidikan */}

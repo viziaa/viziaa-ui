@@ -1,17 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export function EducationForm({ cvData, setCvData }: any) {
+export function EducationForm({ cvData, setEducationData, setCvData }: any) {
   const [school, setSchool] = useState("");
   const [level, setLevel] = useState("");
 
   const addEducation = () => {
-    setCvData({
-      ...cvData,
-      education: [...cvData.education, { school, level }],
+    setEducationData({
+       school, level 
     });
     setSchool("");
     setLevel("");
   };
+
+    useEffect(() => {
+       if (school.length === 0 && level.length===0) return;
+      setCvData((prev: any) => {
+        // kalau belum ada education → buat baru
+        if (!prev.education || prev.education.length === 0) {
+          return {
+            ...prev,
+            education: [{ school, level }],
+          };
+        }
+  
+        // kalau sudah ada → ganti data terakhir
+        const updated = [...prev.education];
+        updated[updated.length - 1] = { school, level };
+  
+        return {
+          ...prev,
+          education: updated,
+        };
+      });
+    }, [school, level]);
 
   return (
     <div className="p-4 border rounded-xl shadow-sm shadow-blue-300">

@@ -1,23 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export function WorkExperienceForm({ cvData, setCvData }: any) {
+export function WorkExperienceForm({ cvData, setCvData, setExperiencesData }: any) {
   const [corporate, setCorporate] = useState("");
   const [dateIn, setDateIn] = useState("");
   const [dateOut, setDateOut] = useState("");
 
   const addWork = () => {
-    if (!corporate) return;
-    setCvData({
-      ...cvData,
-      work_experiences: [
-        ...cvData.work_experiences,
-        { corporate, date_in: dateIn, date_out: dateOut },
-      ],
+    setExperiencesData({
+      corporate, date_in: dateIn, date_out: dateOut 
     });
     setCorporate("");
     setDateIn("");
     setDateOut("");
   };
+
+  useEffect(() => {
+           if (corporate.length === 0 && dateIn.length===0 && dateOut.length===0) return;
+          setCvData((prev: any) => {
+            // kalau belum ada work experiences → buat baru
+            if (!prev.work_experiences || prev.work_experiences.length === 0) {
+              return {
+                ...prev,
+                work_experiences: [{ corporate, date_in: dateIn, date_out: dateOut  }],
+              };
+            }
+      
+            // kalau sudah ada → ganti data terakhir
+            const updated = [...prev.work_experiences];
+            updated[updated.length - 1] = { corporate, date_in: dateIn, date_out: dateOut  };
+      
+            return {
+              ...prev,
+              work_experiences: updated,
+            };
+          });
+        }, [corporate, dateIn, dateOut]);
 
   return (
     <div className="p-4 border rounded-xl shadow-sm shadow-blue-300">

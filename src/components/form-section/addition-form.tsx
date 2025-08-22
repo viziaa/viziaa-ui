@@ -1,19 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export function AdditionForm({ cvData, setCvData }: any) {
+export function AdditionForm({ cvData, setAdditionData, setCvData }: any) {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
 
   const addAddition = () => {
-    if (!question || !answer) return;
-    setCvData({
-      ...cvData,
-      additions: [...cvData.additions, { question, answer }],
+    setAdditionData({
+     question, answer,
     });
     setQuestion("");
     setAnswer("");
   };
 
+  
+
+  useEffect(() => {
+     if (question.length === 0 && answer.length===0) return;
+    setCvData((prev: any) => {
+      // kalau belum ada additions → buat baru
+      if (!prev.additions || prev.additions.length === 0) {
+        return {
+          ...prev,
+          additions: [{ question, answer }],
+        };
+      }
+
+      // kalau sudah ada → ganti data terakhir
+      const updated = [...prev.additions];
+      updated[updated.length - 1] = { question, answer };
+
+      return {
+        ...prev,
+        additions: updated,
+      };
+    });
+  }, [question, answer]);
   return (
     <div className="p-4 border rounded-xl shadow-sm shadow-blue-300">
       <h3 className="font-semibold text-blue-700">Tambahan</h3>

@@ -1,23 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export function SkillsForm({ cvData, setCvData }: any) {
+export function SkillsForm({ cvData, setCvData, setSkillData }: any) {
   const [skill, setSkill] = useState("");
   const [level, setLevel] = useState("");
   const [certified, setCertified] = useState(false);
 
   const addSkill = () => {
-    if (!skill) return;
-    setCvData({
-      ...cvData,
-      skills: [
-        ...cvData.skills,
-        { skill_name: skill, ability_level: level, certified },
-      ],
+    setSkillData({
+     skill_name: skill, ability_level: level, certified 
     });
     setSkill("");
     setLevel("");
     setCertified(false);
   };
+
+  useEffect(() => {
+         if (skill.length === 0 && level.length===0) return;
+        setCvData((prev: any) => {
+          // kalau belum ada skills → buat baru
+          if (!prev.skills || prev.skills.length === 0) {
+            return {
+              ...prev,
+              skills: [{ skill_name: skill, ability_level: level, certified }],
+            };
+          }
+    
+          // kalau sudah ada → ganti data terakhir
+          const updated = [...prev.skills];
+          updated[updated.length - 1] = { skill_name: skill, ability_level: level, certified };
+    
+          return {
+            ...prev,
+            skills: updated,
+          };
+        });
+      }, [skill, level]);
 
   return (
     <div className="p-4 border rounded-xl shadow-sm shadow-blue-300">
@@ -32,7 +49,7 @@ export function SkillsForm({ cvData, setCvData }: any) {
       <input
         type="text"
         placeholder="Level (Beginner, Intermediate, Advanced)"
-        className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded mt-2"
+        className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
         value={level}
         onChange={(e) => setLevel(e.target.value)}
       />

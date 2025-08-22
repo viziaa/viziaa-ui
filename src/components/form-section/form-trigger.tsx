@@ -13,18 +13,18 @@ interface Step {
   component: React.ReactNode;
 }
 
-export default function CvStepper({ cvData, setCvData }: any) {
+export default function CvStepper({ cvData, setCvData, setUserData, setEducationData, setExperiencesData, setSkillData, setAdditionData  }: any) {
   const [activeStep, setActiveStep] = useState<number>(1);
 
   const steps: Step[] = [
-    { id: 1, label: "Data Pribadi", component: <EducationForm cvData={cvData} setCvData={setCvData} /> },
-    { id: 2, label: "Pendidikan", component: <EducationForm cvData={cvData} setCvData={setCvData} /> },
-    { id: 3, label: "Pengalaman Kerja", component: <WorkExperienceForm cvData={cvData} setCvData={setCvData} /> },
-    { id: 4, label: "Skill", component: <SkillsForm cvData={cvData} setCvData={setCvData} /> },
-    { id: 5, label: "Lainnya", component: <AdditionForm cvData={cvData} setCvData={setCvData} /> },
+    { id: 1, label: "Data Pribadi", component: <EducationForm cvData={cvData} setCvData={setCvData} setUserData={setUserData} /> },
+    { id: 2, label: "Pendidikan", component: <EducationForm cvData={cvData} setCvData={setCvData} setEducationData={setEducationData} /> },
+    { id: 3, label: "Pengalaman Kerja", component: <WorkExperienceForm cvData={cvData} setCvData={setCvData} setExperiencesData={setExperiencesData} /> },
+    { id: 4, label: "Skill", component: <SkillsForm cvData={cvData} setCvData={setCvData} setSkillData={setSkillData} /> },
+    { id: 5, label: "Lainnya", component: <AdditionForm cvData={cvData}  setAdditionData={setAdditionData} setCvData={setCvData} /> },
     // { id: 4, label: "Organisasi", component: <WorkExperienceForm cvData={cvData} setCvData={setCvData} /> },
   ];
-
+ 
   return (
     <div className="space-y-6">
       {/* Step Indicator */}
