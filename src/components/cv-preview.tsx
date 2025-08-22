@@ -1,40 +1,204 @@
-import React from "react";
+import api from "@/services/api";
+import React, { useEffect, useState } from "react";
+
+interface User {
+  id: string;
+  fullname?: string;
+  email: string;
+  phone_number: number;
+  address: string;
+  city: string;
+  region: string;
+  about: string;
+  birthdate: string;
+}
 
 export function CVPreview({ cvData }: any) {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fetchCV = async () => {
+      try {
+        const Aresponse = await api.get("/user");
+        setUser(Aresponse.data); // Simpan objek user
+      } catch (error) {
+        console.error("Error fetching CV data:", error);
+        setUser(null);
+      }
+    };
+
+    fetchCV();
+  }, []);
+
   return (
-    <div
-      className="p-6 border rounded-2xl shadow-md bg-gray-50 h-full overflow-y-auto"
-      style={{ fontFamily: cvData.font, color: cvData.color }}
-    >
-      <h1 className="text-2xl font-bold mb-4">{cvData.name}</h1>
-      <h2 className="text-lg font-semibold">Pendidikan</h2>
-      <ul className="list-disc ml-6">
-        {cvData.education.map((e: any, i: number) => (
-          <li key={i}>
-            {e.level} - {e.school}
-          </li>
-        ))}
-      </ul>
-      <h2 className="text-lg font-semibold mt-4">Pengalaman Kerja</h2>
-      <ul className="list-disc ml-6">
-        {cvData.work_experiences.map((w: any, i: number) => (
-          <li key={i}>{w.corporate} ({w.date_in} - {w.date_out})</li>
-        ))}
-      </ul>
-      <h2 className="text-lg font-semibold mt-4">Skills</h2>
-      <ul className="list-disc ml-6">
-        {cvData.skills.map((s: any, i: number) => (
-          <li key={i}>{s.skill_name} ({s.ability_level})</li>
-        ))}
-      </ul>
-      <h2 className="text-lg font-semibold mt-4">Tambahan</h2>
-        <ul className="list-disc ml-6">
-        {cvData.additions.map((a: any, i: number) => (
-            <li key={i}>
-            <strong>{a.question}:</strong> {a.answer}
+    <div className="p-8 bg-white rounded-xl shadow-lg w-full max-w-7xl mx-auto">
+      <div className="flex items-center gap-6 border-b pb-6 mb-6">
+        <img
+          src={
+            cvData.photo ||
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjKU8YDosyoTjWVSrMGvkVLFbrx2Xyn4qPrg&s"
+          }
+          alt="Profile"
+          className="w-28 h-28 rounded-full object-cover border-4 border-white shadow-md"
+        />
+        <div>
+          <h1 className="text-2xl font-serif">{user?.fullname}</h1>
+          <p className="text-gray-600">
+            {user?.phone_number} | {user?.email}
+          </p>
+          <p className="font-medium mt-1">
+            {user?.address}, {user?.city}, {user?.region}
+          </p>
+        </div>
+      </div>
+      <section className="mb-6">
+        {" "}
+        <h2 className="text-lg font-bold border-b pb-1 mb-2">
+          Tentang Saya
+        </h2>{" "}
+        <p className="text-gray-700 leading-relaxed">{user?.about}</p>{" "}
+      </section>{" "}
+      {/* Pendidikan */}{" "}
+      <section className="mb-6">
+        {" "}
+        <h2 className="text-lg font-bold border-b pb-1 mb-2">
+          Pendidikan
+        </h2>{" "}
+        <ul className="space-y-2">
+          {" "}
+          {cvData.education.map((edu: any, i: number) => (
+            <li key={i} className="text-gray-800 font-medium">
+              {" "}
+              {edu.date_in} - {edu.date_out} | {edu.school}{" "}
             </li>
-        ))}
-        </ul>
+          ))}{" "}
+        </ul>{" "}
+      </section>{" "}
+      {/* Pengalaman Kerja */}{" "}
+      <section className="mb-6">
+        {" "}
+        <h2 className="text-lg font-bold border-b pb-1 mb-2">
+          {" "}
+          Pengalaman Kerja{" "}
+        </h2>{" "}
+        <ul className="space-y-2">
+          {" "}
+          {cvData.work_experiences.map((work: any, i: number) => (
+            <li key={i} className="text-gray-800 font-medium">
+              {" "}
+              {work.date_in} - {work.date_out} | {work.corporate}{" "}
+            </li>
+          ))}{" "}
+        </ul>{" "}
+      </section>{" "}
+      {/* Kemampuan */}{" "}
+      <section>
+        {" "}
+        <h2 className="text-lg font-bold border-b pb-1 mb-2">Kemampuan</h2>{" "}
+        <ul className="space-y-1 list-disc list-inside">
+          {" "}
+          {cvData.skills.map((s: any, i: number) => (
+            <li key={i} className="text-gray-800">
+              {" "}
+              {s.skill_name} | {s.ability_level} ⭐{" "}
+            </li>
+          ))}{" "}
+        </ul>{" "}
+      </section>
+    </div>
+  );
+}
+
+export default function CVPreview2({ cvData }: { cvData: any }) {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fetchCV = async () => {
+      try {
+        const Aresponse = await api.get("/user");
+        setUser(Aresponse.data); // Simpan objek user
+      } catch (error) {
+        console.error("Error fetching CV data:", error);
+        setUser(null);
+      }
+    };
+
+    fetchCV();
+  }, []);
+
+  return (
+    <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+      {/* Header */}
+      <div className="bg-blue-900 text-white p-8 flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-extrabold">{user?.fullname}</h1>
+        </div>
+        <img
+          src={
+            cvData.photo ||
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjKU8YDosyoTjWVSrMGvkVLFbrx2Xyn4qPrg&s"
+          }
+          alt="Profile"
+          className="w-24 h-24 rounded-full border-4 border-white object-cover shadow-md"
+        />
+      </div>
+
+      {/* Body */}
+      <div className="p-8 space-y-6">
+        {/* Data Pribadi */}
+        <section>
+          <h2 className="text-blue-900 font-bold mb-2">DATA PRIBADI</h2>
+          <div className="text-gray-800 space-y-1">
+            <p>Nama: {user?.fullname}</p>
+            <p>Tanggal Lahir: {user?.birthdate}</p>
+            <p>Alamat: {user?.address}</p>
+            <p>No. Handphone: {user?.phone_number}</p>
+            <p>Email: {user?.email}</p>
+          </div>
+        </section>
+
+        {/* Tentang Saya */}
+        <section>
+          <h2 className="text-blue-900 font-bold mb-2">TENTANG SAYA</h2>
+          <p className="text-gray-700 leading-relaxed">{user?.about}</p>
+        </section>
+
+        {/* Pendidikan */}
+        <section>
+          <h2 className="text-blue-900 font-bold mb-2">PENDIDIKAN</h2>
+          <ul className="list-disc list-inside text-gray-800 space-y-1">
+            {cvData.education.map((edu: any, i: number) => (
+              <li key={i}>
+                {edu.date_in} - {edu.date_out} | {edu.school}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* Keahlian */}
+        <section>
+          <h2 className="text-blue-900 font-bold mb-2">KEAHLIAN</h2>
+          <ul className="list-disc list-inside text-gray-800 space-y-1">
+            {cvData.skills.map((s: any, i: number) => (
+              <li key={i}>
+                {s.skill_name} | {s.ability_level}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* Pengalaman Kerja */}
+        <section>
+          <h2 className="text-blue-900 font-bold mb-2">PENGALAMAN KERJA</h2>
+          <ul className="text-gray-800 space-y-1">
+            {cvData.work_experiences.map((work: any, i: number) => (
+              <li key={i}>
+                {work.date_in} - {work.date_out} | {work.corporate}
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
     </div>
   );
 }

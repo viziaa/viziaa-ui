@@ -1,103 +1,93 @@
+"use client";
+
+import Navbar from "@/components/Navbar";
 import Image from "next/image";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import api from "@/services/api";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [showDialog, setShowDialog] = useState(false);
+  const [name, setName] = useState("");
+  const router = useRouter();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleSubmit = async () => {
+    try {
+      await api.post("/cv", { name });
+      setShowDialog(false);
+      router.push("/cv");
+    } catch (error) {
+      console.error("Error submitting CV:", error);
+    }
+  };
+
+  return (
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-white flex flex-col items-center justify-center text-center px-6 mt-12">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 max-w-2xl leading-tight">
+          CV Builder & Platform Persiapan Karier <br />
+        </h1>
+        <p className="text-gray-600 mt-4 max-w-xl">
+          Buat CV yang ATS friendly hingga latihan interview tanpa perlu
+          berpindah-pindah website. Persiapkan semua kebutuhan karier kamu di CV
+          Builder by Viziaa.
+        </p>
+        <Button onClick={() => setShowDialog(true)} className="mt-6 px-6 py-3">
+          Create your resume
+        </Button>
+
+        {/* Ilustrasi */}
+        <div className="mt-10 relative max-w-4xl w-full">
+          <Image
+            src="/bg.png"
+            alt="Tampilan CV"
+            width={1000}
+            height={600}
+            className="rounded-lg shadow-lg"
+          />
+          <div className="absolute top-4 left-4 bg-blue-100 text-blue-900 px-4 py-2 rounded-full shadow-md flex items-center gap-2">
+            <span className="font-semibold">Pembuatan Resume</span>
+          </div>
+          <div className="absolute bottom-4 left-4 bg-green-100 text-green-900 px-4 py-2 rounded-full shadow-md flex items-center gap-2">
+            <span className="font-semibold">Kursus Persiapan Karier</span>
+          </div>
+          <div className="absolute top-4 right-4 bg-pink-100 text-pink-900 px-4 py-2 rounded-full shadow-md flex items-center gap-2">
+            <span className="font-semibold">Portal Lowongan Pekerjaan</span>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+      {/* Dialog Input Nama */}
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Masukkan Nama Anda</DialogTitle>
+          </DialogHeader>
+          <Input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Nama Lengkap"
+            className="mt-4"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          <DialogFooter className="mt-6 flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setShowDialog(false)}>
+              Batal
+            </Button>
+            <Button onClick={handleSubmit}>Oke</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

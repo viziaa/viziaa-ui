@@ -27,7 +27,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      await api.post("/api/v1/register", form);
+      await api.post("/auth/register", form);
       setLoading(false);
 
       await MySwal.fire({
