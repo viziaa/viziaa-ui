@@ -1,13 +1,21 @@
+import api from "@/services/api";
+import { AdditionsProps } from "@/types/cv-type";
 import React, { useEffect, useState } from "react";
 
-export function AdditionForm({ cvData, setAdditionData, setCvData }: any) {
+
+
+export function AdditionForm({ cvData, setAdditionData, setCvData }:AdditionsProps) {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+  
 
+  
   const addAddition = () => {
-    setAdditionData({
-     question, answer,
-    });
+    const fetchNewAddition = async ()=>{
+    const res = await api.post(`/educations/${cvData.id}`, {question, answer})
+    console.log(res.data)
+    setAdditionData({ id:res.data.id, question, answer})};
+    fetchNewAddition()
     setQuestion("");
     setAnswer("");
   };
@@ -16,18 +24,18 @@ export function AdditionForm({ cvData, setAdditionData, setCvData }: any) {
 
   useEffect(() => {
      if (question.length === 0 && answer.length===0) return;
-    setCvData((prev: any) => {
+    setCvData((prev) => {
       // kalau belum ada additions → buat baru
       if (!prev.additions || prev.additions.length === 0) {
         return {
           ...prev,
-          additions: [{ question, answer }],
+          additions: [{ id:0, question, answer }],
         };
       }
 
       // kalau sudah ada → ganti data terakhir
       const updated = [...prev.additions];
-      updated[updated.length - 1] = { question, answer };
+      updated[updated.length - 1] = { id:0, question, answer };
 
       return {
         ...prev,

@@ -8,19 +8,17 @@ import CVPreview2, { CVPreview } from "./cv-preview";
 import { CVToolbar } from "./cv-toolbar";
 import CvStepper from "./form-section/form-trigger";
 import api from "@/services/api";
+import { CVPageProps } from "@/types/cv-type";
 
 
 
-interface CV {
-  id: string;
-  name: string;
-}
 
 
 
 
 export default function CVPage() {
-  const [cvData, setCvData] = useState<any>({
+  const [cvData, setCvData] = useState<CVPageProps>({
+    id:0,
     name: "Nama Anda",
     font: "",
     color: "#000000", // biru default
@@ -31,19 +29,24 @@ export default function CVPage() {
     additions: [],
   });
 
-  console.log(cvData.color)
+  
+ 
  useEffect(() => {
-    const fetchUser = async () => {
+
+    fetchUser();
+  }, []);
+
+  const fetchUser = async () => {
       try {
         const res = await api.get("/user");
         const user = res.data;
-        console.log(res.data)
 
         if (user && user.cv && user.cv.length > 0) {
           const selectedCv = user.cv[0]; // ambil cv pertama (atau sesuai kebutuhan)
 
           setCvData({
             ...cvData,
+            id: selectedCv.id || cvData.id,
             name: selectedCv.name || cvData.name,
             font: selectedCv.font || cvData.font,
             color: selectedCv.color || cvData.color,
@@ -58,10 +61,7 @@ export default function CVPage() {
         console.error("Error fetching user:", error);
       }
     };
-
-    fetchUser();
-  }, []);
-  console.log(cvData)
+  
   const[userData, setUserData] = useState([])
   const[educationData, setEducationData] = useState([])
   const[experiencesData, setExperiencesData] = useState([])
@@ -70,26 +70,31 @@ export default function CVPage() {
 
   useEffect(()=>{
      if (userData.length === 0) return;
+     fetchUser();
     alert("berhasil fetch")
   },[userData])
 
   useEffect(()=>{
      if (educationData.length === 0) return;
+     fetchUser();
     alert("berhasil fetch")
   },[educationData])
 
   useEffect(()=>{
      if (experiencesData.length === 0) return;
+     fetchUser();
     alert("berhasil fetch")
   },[experiencesData])
 
   useEffect(()=>{
      if (skillData.length === 0) return;
+     fetchUser();
     alert("berhasil fetch")
   },[skillData])
 
    useEffect(()=>{
      if (additionData.length === 0) return;
+     fetchUser();
      alert("berhasil fetch")
   },[additionData])
 

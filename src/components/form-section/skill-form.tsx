@@ -1,33 +1,57 @@
+import api from "@/services/api";
+import { SkillProps } from "@/types/cv-type";
 import React, { useEffect, useState } from "react";
 
-export function SkillsForm({ cvData, setCvData, setSkillData }: any) {
+export function SkillsForm({ cvData, setCvData, setSkillData }: SkillProps) {
   const [skill, setSkill] = useState("");
   const [level, setLevel] = useState("");
-  const [certified, setCertified] = useState(false);
+  const [certificate, setCertificate] = useState("");
+  const [certified, setCertified]= useState(false)
+  const [errorMsg, setErrorMsg] = useState("")
 
   const addSkill = () => {
+    try{
+       if(certificate) {
+          setCertified(true)
+        } else {
+          setCertified(false)
+        }
+    const fetchNewSkill = async ()=>{
+    const res = await api.post(`/skill/${cvData.id}`, {skill_name: skill, ability_level: level, certificate})
+    console.log(res)
     setSkillData({
-     skill_name: skill, ability_level: level, certified 
-    });
+       id:res.data.id, skill_name: skill, ability_level: level, certificate, certified}) 
+    };
+    fetchNewSkill()
     setSkill("");
     setLevel("");
     setCertified(false);
+    } catch (err: any) {
+      console.error("Fetch Data Skill error", err);
+      setErrorMsg(err.response?.data?.message || "Gagal fecth data");
+    }
   };
 
   useEffect(() => {
-         if (skill.length === 0 && level.length===0) return;
-        setCvData((prev: any) => {
+        if(certificate) {
+          setCertified(true)
+        } else {
+          setCertified(false)
+        }
+        setCvData((prev) => {
           // kalau belum ada skills → buat baru
-          if (!prev.skills || prev.skills.length === 0) {
+          if (!prev.skills.some((skill) => skill.isDraft)) {
             return {
               ...prev,
-              skills: [{ skill_name: skill, ability_level: level, certified }],
+              skills: [
+                ...prev.skills,
+                {id:0, skill_name: skill, ability_level: level, certificate, certified, isDraft:true}],
             };
           }
     
           // kalau sudah ada → ganti data terakhir
           const updated = [...prev.skills];
-          updated[updated.length - 1] = { skill_name: skill, ability_level: level, certified };
+          updated[updated.length - 1] = { id:0, skill_name: skill, ability_level: level, certificate, certified, isDraft:true};
     
           return {
             ...prev,
@@ -46,21 +70,23 @@ export function SkillsForm({ cvData, setCvData, setSkillData }: any) {
         value={skill}
         onChange={(e) => setSkill(e.target.value)}
       />
-      <input
-        type="text"
-        placeholder="Level (Beginner, Intermediate, Advanced)"
+      <select
         className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
         value={level}
         onChange={(e) => setLevel(e.target.value)}
+      >
+        <option value="">Seberapa Kamu Menguasai Skillmu ?</option>
+        <option value="dasar">Dasar</option>
+        <option value="menengah">Menengah</option>
+        <option value="mahir">Mahir</option>
+      </select>
+      <input
+        type="text"
+        placeholder="Link Sertifikat (http:XXXXXXXXX)"
+        className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+        value={certificate}
+        onChange={(e) => setCertificate(e.target.value)}
       />
-      <label className="flex items-center text-gray-500 gap-2 mt-2">
-        <input
-          type="checkbox"
-          checked={certified}
-          onChange={(e) => setCertified(e.target.checked)}
-        />
-        <span>Bersertifikat</span>
-      </label>
       <button
         onClick={addSkill}
         className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg"

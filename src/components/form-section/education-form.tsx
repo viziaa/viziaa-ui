@@ -1,42 +1,64 @@
+import api from "@/services/api";
+import { EducationProps } from "@/types/cv-type";
 import React, { useEffect, useState } from "react";
 
-export function EducationForm({ cvData, setEducationData, setCvData }: any) {
+export function EducationForm({ cvData, setEducationData, setCvData }: EducationProps) {
   const [school, setSchool] = useState("");
   const [level, setLevel] = useState("");
+  const [address, setAddress] = useState("");
+  const [dateIn, setDateIn] = useState("");
+  const [dateOut, setDateOut] = useState("");
 
   const addEducation = () => {
+    const fetchNewEducation = async ()=>{
+    const res = await api .post(`/educations/${cvData.id}`, {education_level:level, school_name:school, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut) })
+    console.log(res)
     setEducationData({
-       school, level 
-    });
+       id:res.data.id ,education_level:level, school_name:school, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut) 
+    })};
+    fetchNewEducation()
     setSchool("");
     setLevel("");
+    setAddress("")
+    setDateIn("");
+    setDateOut("")
   };
 
     useEffect(() => {
-       if (school.length === 0 && level.length===0) return;
-      setCvData((prev: any) => {
+      //  if (school.length === 0 && level.length===0) return;
+      setCvData((prev) => {
         // kalau belum ada education → buat baru
-        if (!prev.education || prev.education.length === 0) {
+        if (!prev.education.some((edu) => edu.isDraft)) {
           return {
             ...prev,
-            education: [{ school, level }],
+            education: [
+              ...prev.education,
+              { id:0, education_level:level, school_name:school, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut), isDraft:true }],
           };
         }
   
         // kalau sudah ada → ganti data terakhir
         const updated = [...prev.education];
-        updated[updated.length - 1] = { school, level };
+        updated[updated.length - 1] = { id:0, education_level:level, school_name:school, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut), isDraft:true };
   
         return {
           ...prev,
           education: updated,
         };
       });
-    }, [school, level]);
+    }, [school, level, address, dateIn, dateOut]);
 
   return (
     <div className="p-4 border rounded-xl shadow-sm shadow-blue-300">
       <h3 className="font-semibold text-blue-700">Pendidikan</h3>
+      
+      <input
+        type="text"
+        placeholder="Jenjang"
+        className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+        value={level}
+        onChange={(e) => setLevel(e.target.value)}
+      />
       <input
         type="text"
         placeholder="Nama Sekolah"
@@ -46,11 +68,25 @@ export function EducationForm({ cvData, setEducationData, setCvData }: any) {
       />
       <input
         type="text"
-        placeholder="Jenjang"
+        placeholder="Alamat Sekolah"
         className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
-        value={level}
-        onChange={(e) => setLevel(e.target.value)}
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
       />
+      <div className="flex gap-2 mt-2">
+        <input
+          type="date"
+          className="w-1/2 p-2 border text-gray-400 hover:text-black rounded"
+          value={dateIn}
+          onChange={(e) => setDateIn(e.target.value)}
+        />
+        <input
+          type="date"
+          className="w-1/2 p-2 border text-gray-400 hover:text-black rounded"
+          value={dateOut}
+          onChange={(e) => setDateOut(e.target.value)}
+        />
+      </div>
       <button
         onClick={addEducation}
         className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg"

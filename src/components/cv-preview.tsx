@@ -174,7 +174,7 @@ export default function CVPreview2({ cvData }: { cvData: any }) {
           <ul className="list-disc list-inside text-gray-800 space-y-1">
             {cvData.education.map((edu: any, i: number) => (
               <li key={i}>
-                {edu.date_in} - {edu.date_out} | {edu.school}
+                {edu.date_in && !isNaN(new Date(edu.date_in).getTime()) && new Date(edu.date_in).toLocaleDateString()} - {edu.date_out && new Date(edu.date_out).toLocaleDateString()} | {edu.education_level} {edu.school_name} {edu.school_address}
               </li>
             ))}
           </ul>
@@ -198,7 +198,18 @@ export default function CVPreview2({ cvData }: { cvData: any }) {
           <ul className="text-gray-800 space-y-1">
             {cvData.work_experiences.map((work: any, i: number) => (
               <li key={i}>
-                {work.date_in} - {work.date_out} | {work.corporate}
+                {work.date_in && !isNaN(new Date(work.date_in).getTime()) && new Date(work.date_in).toLocaleDateString()} - {work.date_in && !isNaN(new Date(work.date_in).getTime()) && new Date(work.date_out).toLocaleDateString()} | {work.corporate}
+              </li>
+            ))}
+          </ul>
+        </section>
+        {/* Pengalaman Kerja */}
+        <section>
+          <h2 className="text-blue-900 font-bold mb-2">Tambahan</h2>
+          <ul className="text-gray-800 space-y-1">
+            {cvData.additions.map((addition: any, i: number) => (
+              <li key={i}>
+                {addition.question} - {addition.answer} 
               </li>
             ))}
           </ul>

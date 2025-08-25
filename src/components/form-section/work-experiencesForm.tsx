@@ -1,33 +1,47 @@
+import api from "@/services/api";
+import { ExperienceItem, ExperienceProps } from "@/types/cv-type";
 import React, { useEffect, useState } from "react";
 
-export function WorkExperienceForm({ cvData, setCvData, setExperiencesData }: any) {
+export function WorkExperienceForm({ cvData, setCvData, setExperiencesData }: ExperienceProps) {
   const [corporate, setCorporate] = useState("");
   const [dateIn, setDateIn] = useState("");
   const [dateOut, setDateOut] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
 
   const addWork = () => {
+    try{
+    const fetchNewWork = async ()=>{
+    const res = await api.post(`/experiences/${cvData.id}`, {corporate, date_in: dateIn, date_out: dateOut })
+    console.log(res)
     setExperiencesData({
-      corporate, date_in: dateIn, date_out: dateOut 
-    });
+       id:res.data.id, corporate, date_in: new Date(dateIn), date_out: new Date(dateOut)}) 
+    };
+    fetchNewWork()
     setCorporate("");
     setDateIn("");
     setDateOut("");
+    } catch (err:any) {
+      console.error("Fetch Data Work Experience error", err);
+      setErrorMsg(err.response?.data?.message || "Gagal fecth data");
+    }
   };
 
   useEffect(() => {
-           if (corporate.length === 0 && dateIn.length===0 && dateOut.length===0) return;
-          setCvData((prev: any) => {
+           
+          setCvData((prev) => {
             // kalau belum ada work experiences → buat baru
-            if (!prev.work_experiences || prev.work_experiences.length === 0) {
+            if (!prev.work_experiences.some((experience)=> experience.isDraft)) {
               return {
                 ...prev,
-                work_experiences: [{ corporate, date_in: dateIn, date_out: dateOut  }],
+                work_experiences: [
+                  ...prev.work_experiences, {id:0, corporate, date_in: new Date(dateIn), date_out: new Date(dateOut), isDraft:true}],
               };
             }
       
             // kalau sudah ada → ganti data terakhir
             const updated = [...prev.work_experiences];
-            updated[updated.length - 1] = { corporate, date_in: dateIn, date_out: dateOut  };
+            updated[updated.length - 1] = { id:0, corporate, date_in: new Date(dateIn), date_out: new Date(dateOut), isDraft:true};
       
             return {
               ...prev,
