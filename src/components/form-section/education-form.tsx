@@ -8,24 +8,31 @@ export function EducationForm({ cvData, setEducationData, setCvData }: Education
   const [address, setAddress] = useState("");
   const [dateIn, setDateIn] = useState("");
   const [dateOut, setDateOut] = useState("");
+  const [errorMsg, setErrorMsg] = useState("")
+  
 
   const addEducation = () => {
-    const fetchNewEducation = async ()=>{
-    const res = await api .post(`/educations/${cvData.id}`, {education_level:level, school_name:school, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut) })
-    console.log(res)
-    setEducationData({
-       id:res.data.id ,education_level:level, school_name:school, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut) 
-    })};
-    fetchNewEducation()
-    setSchool("");
-    setLevel("");
-    setAddress("")
-    setDateIn("");
-    setDateOut("")
+    try{
+      const fetchNewEducation = async ()=>{
+      const res = await api .post(`/educations/${cvData.id}`, {education_level:level, school_name:school, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut) })
+      console.log(res)
+      setEducationData({
+        id:res.data.id ,education_level:level, school_name:school, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut) 
+      })};
+      fetchNewEducation()
+      setSchool("");
+      setLevel("");
+      setAddress("")
+      setDateIn("");
+      setDateOut("")
+    } catch (err: any) {
+      console.error("Fetch Data Skill error", err);
+      setErrorMsg(err.response?.data?.message || "Gagal fecth data");
+    }
+    
   };
 
     useEffect(() => {
-      //  if (school.length === 0 && level.length===0) return;
       setCvData((prev) => {
         // kalau belum ada education → buat baru
         if (!prev.education.some((edu) => edu.isDraft)) {

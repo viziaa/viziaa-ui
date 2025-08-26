@@ -6,6 +6,20 @@ export interface ExperienceItem{
     isDraft?: false | true
 }
 
+export interface UserItem{
+  id: number
+  email: string
+  nickname: string
+  fullname: string 
+  address: string
+  city: string
+  region: string
+  birthdate: Date
+  phone: string
+  about: string 
+  avatar: string
+}
+
 export interface AdditionItem {
   id:number
   question: string
@@ -36,7 +50,7 @@ export interface CVPageProps {
     name: string
     font: string
     color: string
-    user:[]
+    user: UserItem
     education: EducationItem[]
     work_experiences: ExperienceItem[]
     skills: SkillItem[]
@@ -66,5 +80,11 @@ export interface SkillProps{
 export interface ExperienceProps{
   cvData: CVPageProps
   setExperiencesData:({id, corporate, date_in, date_out}: ExperienceItem) => void
+  setCvData: React.Dispatch<React.SetStateAction<CVPageProps>>
+}
+
+export interface UserProps{
+  cvData: CVPageProps
+  setUserData:({id, email, nickname, fullname, address, city, region, birthdate, phone, about, avatar}: UserItem) => void
   setCvData: React.Dispatch<React.SetStateAction<CVPageProps>>
 }

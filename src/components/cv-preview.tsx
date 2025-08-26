@@ -140,7 +140,7 @@ export default function CVPreview2({ cvData }: { cvData: any }) {
         </div>
         <img
           src={
-            cvData.photo ||
+            cvData.user.avatar ||
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjKU8YDosyoTjWVSrMGvkVLFbrx2Xyn4qPrg&s"
           }
           alt="Profile"
@@ -155,7 +155,9 @@ export default function CVPreview2({ cvData }: { cvData: any }) {
           <h2 className="text-blue-900 font-bold mb-2">DATA PRIBADI</h2>
           <div className="text-gray-800 space-y-1">
             <p>Nama: {cvData.user.fullname}</p>
-            <p>Tanggal Lahir: {cvData.user.birthdate}</p>
+            <p>Tanggal Lahir: {cvData.user.birthdate
+                ? new Date(cvData.user.birthdate).toLocaleDateString()
+                : "-"}</p>
             <p>Alamat: {cvData.user.address}</p>
             <p>No. Handphone: {cvData.user.phone_number}</p>
             <p>Email: {cvData.user.email}</p>

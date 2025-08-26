@@ -6,6 +6,7 @@ import {EducationForm} from "./education-form";
 import {WorkExperienceForm} from "./work-experiencesForm";
 import {SkillsForm} from "./skill-form";
 import {AdditionForm} from "./addition-form";
+import { UserForm } from "./user-form";
 
 interface Step {
   id: number;
@@ -17,7 +18,7 @@ export default function CvStepper({ cvData, setCvData, setUserData, setEducation
   const [activeStep, setActiveStep] = useState<number>(1);
 
   const steps: Step[] = [
-    { id: 1, label: "Data Pribadi", component: <EducationForm cvData={cvData} setCvData={setCvData} setEducationData={setEducationData} /> },
+    { id: 1, label: "Data Pribadi", component: <UserForm cvData={cvData} setCvData={setCvData} setUserData={setUserData} /> },
     { id: 2, label: "Pendidikan", component: <EducationForm cvData={cvData} setCvData={setCvData} setEducationData={setEducationData} /> },
     { id: 3, label: "Pengalaman Kerja", component: <WorkExperienceForm cvData={cvData} setCvData={setCvData} setExperiencesData={setExperiencesData} /> },
     { id: 4, label: "Skill", component: <SkillsForm cvData={cvData} setCvData={setCvData} setSkillData={setSkillData} /> },
