@@ -58,14 +58,20 @@ export function EducationForm({ cvData, setEducationData, setCvData }: Education
   return (
     <div className="p-4 border rounded-xl shadow-sm shadow-blue-300">
       <h3 className="font-semibold text-blue-700">Pendidikan</h3>
-      
-      <input
-        type="text"
-        placeholder="Jenjang"
+      <select
         className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
         value={level}
         onChange={(e) => setLevel(e.target.value)}
-      />
+      >
+        <option value="">Jenjang</option>
+        <option value="Tidak Bersekolah">Tidak bersekolah</option>
+        <option value="SD">SD</option>
+        <option value="SMP">SMP</option>
+        <option value="SMA">SMA</option>
+        <option value="s1 / sarjana">S1 / Sarjana</option>
+        <option value="s2 / magister">S2 / magister</option>
+        <option value="s3 / doktor">S3 / doktor</option>
+      </select>
       <input
         type="text"
         placeholder="Nama Sekolah"

@@ -1,5 +1,7 @@
 import api from "@/services/api";
 import React, { useEffect, useState } from "react";
+import { Dialog, DialogClose, DialogTrigger } from "./ui/dialog";
+import { EducationDialog } from "./formEdit-section/education-edit";
 
 interface User {
   id: string;
@@ -109,23 +111,8 @@ export function CVPreview({ cvData }: any) {
   );
 }
 
-export default function CVPreview2({ cvData }: { cvData: any }) {
-  // const [user, setUser] = useState<User | null>(null);
-
-  // useEffect(() => {
-  //   const fetchCV = async () => {
-  //     try {
-  //       const Aresponse = await api.get("/user");
-  //       setUser(Aresponse.data); // Simpan objek user
-  //     } catch (error) {
-  //       console.error("Error fetching CV data:", error);
-  //       setUser(null);
-  //     }
-  //   };
-
-  //   fetchCV();
-  // }, []);
-
+export default function CVPreview2({ cvData, setEducationData }: any) {
+  
   return (
     <div
     style={{
@@ -175,9 +162,15 @@ export default function CVPreview2({ cvData }: { cvData: any }) {
           <h2 className="text-blue-900 font-bold mb-2">PENDIDIKAN</h2>
           <ul className="list-disc list-inside text-gray-800 space-y-1">
             {cvData.education.map((edu: any, i: number) => (
-              <li key={i}>
-                {edu.date_in && !isNaN(new Date(edu.date_in).getTime()) && new Date(edu.date_in).toLocaleDateString()} - {edu.date_out && new Date(edu.date_out).toLocaleDateString()} | {edu.education_level} {edu.school_name} {edu.school_address}
-              </li>
+              <Dialog key={i}>
+                <DialogTrigger className="cursor-pointer">
+                  <li >
+                    {edu.date_in && !isNaN(new Date(edu.date_in).getTime()) && new Date(edu.date_in).toLocaleDateString()} - {edu.date_out && new Date(edu.date_out).toLocaleDateString()} | {edu.education_level} {edu.school_name} {edu.school_address}
+                  </li>
+                </DialogTrigger>
+                < EducationDialog id={edu.id} cvData={cvData} setEducationData={setEducationData}/>
+              </Dialog>
+              
             ))}
           </ul>
         </section>

@@ -1,11 +1,12 @@
 import CVPage from "@/components/CVPage";
 import Navbar from "@/components/Navbar";
 
-export default function CreateCv() {
+export default async function CreateCv({ params }: { params: { id: string } }) {
+  const { id } = await params;
   return (
     <>
       <Navbar />
-      <CVPage />
+      <CVPage cv_id={id}/>
     </>
   );
 }

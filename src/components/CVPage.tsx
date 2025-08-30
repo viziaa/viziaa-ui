@@ -1,9 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { EducationForm } from "./form-section/education-form";
-import { WorkExperienceForm } from "./form-section/work-experiencesForm";
-import { SkillsForm } from "./form-section/skill-form";
-import { AdditionForm } from "./form-section/addition-form";
 import CVPreview2, { CVPreview } from "./cv-preview";
 import { CVToolbar } from "./cv-toolbar";
 import CvStepper from "./form-section/form-trigger";
@@ -13,12 +9,14 @@ import { CVPageProps } from "@/types/cv-type";
 
 
 
+type CVProps = {
+  cv_id: string;
+};
 
 
-
-export default function CVPage() {
+export default function CVPage({cv_id}:CVProps) {
   const [cvData, setCvData] = useState<CVPageProps>({
-    id:0,
+    id: cv_id,
     name: "Nama Anda",
     font: "",
     color: "#d51a52",
@@ -54,7 +52,7 @@ export default function CVPage() {
         const user = res.data;
 
         if (user && user.cv && user.cv.length > 0) {
-          const selectedCv = user.cv[0]; // ambil cv pertama (atau sesuai kebutuhan)
+          const selectedCv = user.cv.find((cv: CVPageProps) => cv.id === cv_id);
 
           setCvData({
             ...cvData,
@@ -125,7 +123,7 @@ export default function CVPage() {
       {/* Kanan: Preview */}
       <div className="flex flex-col space-y-4">
         <CVToolbar cvData={cvData} setCvData={setCvData}/>
-        <CVPreview2 cvData={cvData} />
+        <CVPreview2 cvData={cvData} setEducationData={setEducationData} />
       </div>
     </div>
   );

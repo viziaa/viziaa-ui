@@ -46,7 +46,7 @@ export interface SkillItem{
 }
 
 export interface CVPageProps {
-    id:number
+    id:string
     name: string
     font: string
     color: string
