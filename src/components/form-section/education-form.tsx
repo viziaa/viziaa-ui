@@ -40,13 +40,13 @@ export function EducationForm({ cvData, setEducationData, setCvData }: Education
             ...prev,
             education: [
               ...prev.education,
-              { id:0, education_level:level, school_name:school, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut), isDraft:true }],
+              { id:"0", education_level:level, school_name:school, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut), isDraft:true }],
           };
         }
   
         // kalau sudah ada → ganti data terakhir
         const updated = [...prev.education];
-        updated[updated.length - 1] = { id:0, education_level:level, school_name:school, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut), isDraft:true };
+        updated[updated.length - 1] = { id:"0", education_level:level, school_name:school, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut), isDraft:true };
   
         return {
           ...prev,

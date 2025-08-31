@@ -1,5 +1,5 @@
 export interface ExperienceItem{
-    id:number
+    id:string
     corporate:string
     date_in: Date
     date_out: Date
@@ -27,7 +27,7 @@ export interface AdditionItem {
 }
 
 export interface EducationItem{
-    id:number
+    id:string
     education_level:string
     school_name:string
     school_address: string
@@ -37,7 +37,7 @@ export interface EducationItem{
 }
 
 export interface SkillItem{
-    id:number
+    id:string
     skill_name: string 
     ability_level: string 
     certificate : string

@@ -35,13 +35,13 @@ export function WorkExperienceForm({ cvData, setCvData, setExperiencesData }: Ex
               return {
                 ...prev,
                 work_experiences: [
-                  ...prev.work_experiences, {id:0, corporate, date_in: new Date(dateIn), date_out: new Date(dateOut), isDraft:true}],
+                  ...prev.work_experiences, {id:"0", corporate, date_in: new Date(dateIn), date_out: new Date(dateOut), isDraft:true}],
               };
             }
       
             // kalau sudah ada → ganti data terakhir
             const updated = [...prev.work_experiences];
-            updated[updated.length - 1] = { id:0, corporate, date_in: new Date(dateIn), date_out: new Date(dateOut), isDraft:true};
+            updated[updated.length - 1] = { id:"0", corporate, date_in: new Date(dateIn), date_out: new Date(dateOut), isDraft:true};
       
             return {
               ...prev,

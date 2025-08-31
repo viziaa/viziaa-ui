@@ -45,7 +45,7 @@ export function EducationDialog({ cvData, id, setSkillData }:SkillDialogProps) {
       setSkillData(res.data)
      
     } catch (err) {
-      console.error("Error save education", err);
+      console.error("Error save skill", err);
     } finally {
       setLoading(false);
     }

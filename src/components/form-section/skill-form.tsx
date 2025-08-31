@@ -45,13 +45,13 @@ export function SkillsForm({ cvData, setCvData, setSkillData }: SkillProps) {
               ...prev,
               skills: [
                 ...prev.skills,
-                {id:0, skill_name: skill, ability_level: level, certificate, certified, isDraft:true}],
+                {id:"0", skill_name: skill, ability_level: level, certificate, certified, isDraft:true}],
             };
           }
     
           // kalau sudah ada → ganti data terakhir
           const updated = [...prev.skills];
-          updated[updated.length - 1] = { id:0, skill_name: skill, ability_level: level, certificate, certified, isDraft:true};
+          updated[updated.length - 1] = { id:"0", skill_name: skill, ability_level: level, certificate, certified, isDraft:true};
     
           return {
             ...prev,
