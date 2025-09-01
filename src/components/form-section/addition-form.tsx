@@ -62,7 +62,7 @@ export function AdditionForm({ cvData, setAdditionData, setCvData }:AdditionsPro
       />
       <button
         onClick={addAddition}
-        className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg"
+        className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg cursor-pointer"
       >
         Tambah
       </button>

@@ -12,6 +12,12 @@ interface EducationDialogProps {
  setEducationData:({id, education_level, school_name, school_address, date_in, date_out}: EducationItem)=> void
 }
 
+function formatDateForInput(date: string | Date | null | undefined): string {
+  if (!date) return "";
+  const d = new Date(date);
+  return isNaN(d.getTime()) ? "" : d.toISOString().split("T")[0];
+}
+
 export function EducationDialog({ cvData, id, setEducationData }:EducationDialogProps) {
   const [school, setSchool] = useState("");
   const [level, setLevel] = useState("");
@@ -26,8 +32,8 @@ export function EducationDialog({ cvData, id, setEducationData }:EducationDialog
         setSchool(edu.school_name)
         setLevel(edu.education_level)
         setAddress(edu.school_address)
-        setDateIn(new Date(edu.date_in).toISOString().split("T")[0])
-        setDateOut(new Date(edu.date_out).toISOString().split("T")[0])
+        setDateIn(formatDateForInput(edu.date_in));
+        setDateOut(formatDateForInput(edu.date_out));
   },[])
 
   const handleSave = async () => {

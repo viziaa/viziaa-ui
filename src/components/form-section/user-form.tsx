@@ -36,7 +36,7 @@ export function UserForm({ cvData, setUserData, setCvData }:UserProps) {
       const res = await api.put(`/user/data`, formData ,{
         headers: { "Content-Type": "multipart/form-data" }
       });
-      console.log(res);
+      console.log(res.data);
 
       setUserData(res.data);
 
@@ -56,7 +56,6 @@ export function UserForm({ cvData, setUserData, setCvData }:UserProps) {
         setCity(cvData.user.city);
         setRegion(cvData.user.region);
         if (cvData.user.birthdate) {
-        // kalau sudah Date object
         const date =
         cvData.user.birthdate instanceof Date
             ? cvData.user.birthdate
@@ -165,9 +164,9 @@ export function UserForm({ cvData, setUserData, setCvData }:UserProps) {
 
       <button
         onClick={addUser}
-        className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg"
+        className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg cursor-pointer"
       >
-        Tambah User
+        Simpan Data User
       </button>
     </div>
   );

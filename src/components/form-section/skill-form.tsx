@@ -89,7 +89,7 @@ export function SkillsForm({ cvData, setCvData, setSkillData }: SkillProps) {
       />
       <button
         onClick={addSkill}
-        className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg"
+        className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg cursor-pointer"
       >
         Tambah
       </button>

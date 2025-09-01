@@ -81,31 +81,31 @@ export default function CVPage({cv_id}:CVProps) {
   useEffect(()=>{
      if (userData.length === 0) return;
      fetchUser();
-    alert("berhasil fetch")
+    alert("berhasil simpan data user")
   },[userData])
 
   useEffect(()=>{
      if (educationData.length === 0) return;
      fetchUser();
-    alert("berhasil fetch")
+    alert("berhasil tambahkan data education")
   },[educationData])
 
   useEffect(()=>{
      if (experiencesData.length === 0) return;
      fetchUser();
-    alert("berhasil fetch")
+    alert("berhasil tambahkan data experience")
   },[experiencesData])
 
   useEffect(()=>{
      if (skillData.length === 0) return;
      fetchUser();
-    alert("berhasil fetch")
+    alert("berhasil tambahkan data skill")
   },[skillData])
 
    useEffect(()=>{
      if (additionData.length === 0) return;
      fetchUser();
-     alert("berhasil fetch")
+     alert("berhasil tambahkan data tambahan")
   },[additionData])
 
 
