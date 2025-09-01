@@ -26,7 +26,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      await api.post("/api/v1/login", form);
+      await api.post("/auth/login", form);
 
       MySwal.close(); // Tutup loading
       await MySwal.fire({
