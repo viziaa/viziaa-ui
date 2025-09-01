@@ -21,7 +21,7 @@ export default function CVPage({cv_id}:CVProps) {
     font: "",
     color: "#d51a52",
     user:{
-    id: 0,
+    id: "0",
     email: "",
     nickname: "",
     fullname: "",

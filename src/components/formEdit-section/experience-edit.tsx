@@ -12,7 +12,7 @@ interface ExperienceDialogProps {
  setExperienceData:({id, education_level, school_name, school_address, date_in, date_out}: EducationItem)=> void
 }
 
-export function EducationDialog({ cvData, id, setExperienceData }:ExperienceDialogProps) {
+export function ExperienceDialog({ cvData, id, setExperienceData }:ExperienceDialogProps) {
   const [corporate, setCorporate] = useState("");
   const [dateIn, setDateIn] = useState("");
   const [dateOut, setDateOut] = useState("");

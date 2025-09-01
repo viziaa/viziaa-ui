@@ -12,7 +12,7 @@ interface SkillDialogProps {
  setSkillData:({id, education_level, school_name, school_address, date_in, date_out}: EducationItem)=> void
 }
 
-export function EducationDialog({ cvData, id, setSkillData }:SkillDialogProps) {
+export function SkillDialog({ cvData, id, setSkillData }:SkillDialogProps) {
   const [skill, setSkill] = useState("");
   const [level, setLevel] = useState("");
   const [certificate, setCertificate] = useState("");
@@ -20,7 +20,7 @@ export function EducationDialog({ cvData, id, setSkillData }:SkillDialogProps) {
   const [loading, setLoading] = useState(false);
 
   useEffect(()=>{
-    const skill = cvData.skills.find((e:any) => e.id === id);
+    const skill = cvData.skills.find((e) => e.id === id);
     if(!skill) return
         setSkill(skill.skill_name)
         setLevel(skill.ability_level)

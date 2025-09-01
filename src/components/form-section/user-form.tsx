@@ -3,7 +3,7 @@ import { UserProps } from "@/types/cv-type";
 import React, { useEffect, useState } from "react";
 
 export function UserForm({ cvData, setUserData, setCvData }:UserProps) {
-  const [id, setId] = useState(0);
+  const [id, setId] = useState("");
   const [email, setEmail] = useState("");
   const [nickname, setNickname] = useState("");
   const [fullname, setFullname] = useState("");
@@ -70,7 +70,6 @@ export function UserForm({ cvData, setUserData, setCvData }:UserProps) {
         setAbout(cvData.user.about);
         setAvatar(cvData.user.avatar);
         console.log(avatar)
-        // setCvData((prev) => ({...prev, user: {id, email, nickname, fullname, address, city, region, birthdate: new Date(birthdate), phone, about, avatar: avatarFile ? URL.createObjectURL(avatarFile) : avatar}}))
     
       }, [cvData]);
 

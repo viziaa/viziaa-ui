@@ -7,7 +7,7 @@ export interface ExperienceItem{
 }
 
 export interface UserItem{
-  id: number
+  id: string
   email: string
   nickname: string
   fullname: string 
