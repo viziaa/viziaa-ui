@@ -1,19 +1,20 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
-import Image from "next/image";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import api from "@/services/api";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import api from "@/services/api";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function Home() {
   const [showDialog, setShowDialog] = useState(false);
@@ -25,15 +26,31 @@ export default function Home() {
       await api.post("/cv", { name });
       setShowDialog(false);
       router.push("/cv");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error submitting CV:", error);
+      if (error.response?.data?.message === "Tidak ada session") {
+        Swal.fire({
+          title: "Kamu belum login",
+          text: "Mengalihkan ke halaman login...",
+          icon: "warning",
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+            setTimeout(() => {
+              Swal.close();
+              router.push("/auth/login");
+            }, 2000); // delay 2 detik biar ada efek loading
+          },
+        });
+      }
     }
   };
 
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-white flex flex-col items-center justify-center text-center px-6 mt-12">
+      <main className="min-h-screen bg-white flex flex-col items-center justify-center text-center px-6 p-12">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 max-w-2xl leading-tight">
           CV Builder & Platform Persiapan Karier <br />
         </h1>
