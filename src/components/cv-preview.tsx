@@ -1,7 +1,7 @@
 import api from "@/services/api";
-import React, { useEffect, useState } from "react";
-import { Dialog, DialogClose, DialogTrigger } from "./ui/dialog";
+import { useEffect, useState } from "react";
 import { EducationDialog } from "./formEdit-section/education-edit";
+import { Dialog, DialogTrigger } from "./ui/dialog";
 
 interface User {
   id: string;
@@ -112,16 +112,19 @@ export function CVPreview({ cvData }: any) {
 }
 
 export default function CVPreview2({ cvData, setEducationData }: any) {
-  
   return (
     <div
-    style={{
-    fontFamily: cvData.font || "sans-serif",
-    color:"#d51a52", // default gray-800
-  }}
-    className={"w-full mx-auto bg-white rounded-xl shadow-lg overflow-hidden"}>
+      style={{
+        fontFamily: cvData.font || "sans-serif",
+        color: "#d51a52", // default gray-800
+      }}
+      className={"w-full mx-auto bg-white rounded-xl shadow-lg overflow-hidden"}
+    >
       {/* Header */}
-      <div className="bg-blue-900 text-white p-8 flex  justify-between items-center" style={{backgroundColor:cvData.color || "#000000"}}>
+      <div
+        className="bg-blue-900 text-white p-8 flex  justify-between items-center"
+        style={{ backgroundColor: cvData.color || "#000000" }}
+      >
         <div>
           <h1 className="text-3xl font-extrabold">{cvData.user.fullname}</h1>
         </div>
@@ -142,11 +145,14 @@ export default function CVPreview2({ cvData, setEducationData }: any) {
           <h2 className="text-blue-900 font-bold mb-2">DATA PRIBADI</h2>
           <div className="text-gray-800 space-y-1">
             <p>Nama: {cvData.user.fullname}</p>
-            <p>Tanggal Lahir: {cvData.user.birthdate
+            <p>
+              Tanggal Lahir:{" "}
+              {cvData.user.birthdate
                 ? new Date(cvData.user.birthdate).toLocaleDateString()
-                : "-"}</p>
+                : "-"}
+            </p>
             <p>Alamat: {cvData.user.address}</p>
-            <p>No. Handphone: {cvData.user.phone_number}</p>
+            <p>No. Handphone: {cvData.user.phone}</p>
             <p>Email: {cvData.user.email}</p>
           </div>
         </section>
@@ -164,13 +170,23 @@ export default function CVPreview2({ cvData, setEducationData }: any) {
             {cvData.education.map((edu: any, i: number) => (
               <Dialog key={i}>
                 <DialogTrigger className="cursor-pointer">
-                  <li >
-                    {edu.date_in && !isNaN(new Date(edu.date_in).getTime()) && new Date(edu.date_in).toLocaleDateString()} - {edu.date_out && new Date(edu.date_out).toLocaleDateString()} | {edu.education_level} {edu.school_name} {edu.school_address}
+                  <li>
+                    {edu.date_in &&
+                      !isNaN(new Date(edu.date_in).getTime()) &&
+                      new Date(edu.date_in).toLocaleDateString()}{" "}
+                    -{" "}
+                    {edu.date_out &&
+                      new Date(edu.date_out).toLocaleDateString()}{" "}
+                    | {edu.education_level} {edu.school_name}{" "}
+                    {edu.school_address}
                   </li>
                 </DialogTrigger>
-                < EducationDialog id={edu.id} cvData={cvData} setEducationData={setEducationData}/>
+                <EducationDialog
+                  id={edu.id}
+                  cvData={cvData}
+                  setEducationData={setEducationData}
+                />
               </Dialog>
-              
             ))}
           </ul>
         </section>
@@ -193,7 +209,14 @@ export default function CVPreview2({ cvData, setEducationData }: any) {
           <ul className="text-gray-800 space-y-1">
             {cvData.work_experiences.map((work: any, i: number) => (
               <li key={i}>
-                {work.date_in && !isNaN(new Date(work.date_in).getTime()) && new Date(work.date_in).toLocaleDateString()} - {work.date_in && !isNaN(new Date(work.date_in).getTime()) && new Date(work.date_out).toLocaleDateString()} | {work.corporate}
+                {work.date_in &&
+                  !isNaN(new Date(work.date_in).getTime()) &&
+                  new Date(work.date_in).toLocaleDateString()}{" "}
+                -{" "}
+                {work.date_in &&
+                  !isNaN(new Date(work.date_in).getTime()) &&
+                  new Date(work.date_out).toLocaleDateString()}{" "}
+                | {work.corporate}
               </li>
             ))}
           </ul>
@@ -204,7 +227,7 @@ export default function CVPreview2({ cvData, setEducationData }: any) {
           <ul className="text-gray-800 space-y-1">
             {cvData.additions.map((addition: any, i: number) => (
               <li key={i}>
-                {addition.question} - {addition.answer} 
+                {addition.question} - {addition.answer}
               </li>
             ))}
           </ul>
