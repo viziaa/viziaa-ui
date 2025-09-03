@@ -2,6 +2,7 @@ import api from "@/services/api";
 import React, { useEffect, useState } from "react";
 import { Dialog, DialogClose, DialogTrigger } from "./ui/dialog";
 import { EducationDialog } from "./formEdit-section/education-edit";
+import { Edit, Trash } from "lucide-react";
 
 interface User {
   id: string;
@@ -112,7 +113,6 @@ export function CVPreview({ cvData }: any) {
 }
 
 export default function CVPreview2({ cvData, setEducationData }: any) {
-  
   return (
     <div
     style={{
@@ -162,15 +162,25 @@ export default function CVPreview2({ cvData, setEducationData }: any) {
           <h2 className="text-blue-900 font-bold mb-2">PENDIDIKAN</h2>
           <ul className="list-disc list-inside text-gray-800 space-y-1">
             {cvData.education.map((edu: any, i: number) => (
-              <Dialog key={i}>
-                <DialogTrigger className="cursor-pointer">
-                  <li >
-                    {edu.date_in && !isNaN(new Date(edu.date_in).getTime()) && new Date(edu.date_in).toLocaleDateString()} - {edu.date_out && new Date(edu.date_out).toLocaleDateString()} | {edu.education_level} {edu.school_name} {edu.school_address}
-                  </li>
-                </DialogTrigger>
-                < EducationDialog id={edu.id} cvData={cvData} setEducationData={setEducationData}/>
-              </Dialog>
               
+                  <li key={i} className="group relative">
+                    {edu.date_in && !isNaN(new Date(edu.date_in).getTime()) && new Date(edu.date_in).toLocaleDateString()} - {edu.date_out && new Date(edu.date_out).toLocaleDateString()} | {edu.education_level} {edu.school_name} {edu.school_address}
+                  <div className="hidden group-hover:flex gap-2 ml-4">
+                      <Dialog >
+                        <DialogTrigger className="cursor-pointer hover:bg-blue-300 hover:rounded hover:p-1">
+                      <Edit className="w-4 h-4" />
+                      </DialogTrigger>
+                        < EducationDialog id={edu.id} cvData={cvData} setEducationData={setEducationData}/>
+                      </Dialog>
+                      <Dialog >
+                        <DialogTrigger className="cursor-pointer hover:bg-red-300 hover:rounded hover:p-1">
+                      <Trash className="w-4 h-4 text-red-600" />
+                      </DialogTrigger>
+                        < EducationDialog id={edu.id} cvData={cvData} setEducationData={setEducationData}/>
+                      </Dialog>
+                  </div>
+                  </li>
+                
             ))}
           </ul>
         </section>

@@ -34,7 +34,7 @@ export function EducationDialog({ cvData, id, setEducationData }:EducationDialog
         setAddress(edu.school_address)
         setDateIn(formatDateForInput(edu.date_in));
         setDateOut(formatDateForInput(edu.date_out));
-  },[])
+  },[cvData])
 
   const handleSave = async () => {
     try {
