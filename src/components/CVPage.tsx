@@ -127,7 +127,11 @@ export default function CVPage({ cv_id }: CVProps) {
       {/* Kanan: Preview */}
       <div className="flex flex-col space-y-4">
         <CVToolbar cvData={cvData} setCvData={setCvData} />
-        <CVPreview2 cvData={cvData} setEducationData={setEducationData} />
+        <CVPreview2
+          cvData={cvData}
+          setCvData={setCvData}
+          setEducationData={setEducationData}
+        />
       </div>
     </div>
   );
