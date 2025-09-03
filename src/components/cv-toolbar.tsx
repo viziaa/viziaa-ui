@@ -14,38 +14,48 @@ export function CVToolbar({ cvData, setCvData }: any) {
           <option value="serif">Serif</option>
           <option value="monospace">Mono</option>
           <option value="monospace">Mono</option> */}
-          
-            <option value="sans-serif">Sans</option>
-            <option value="serif">Serif</option>
-            <option value="monospace">Monospace</option>
-            <option value="cursive">Cursive</option>
-            <option value="fantasy">Fantasy</option>
-            <option value="system-ui">System UI</option>
 
-            {/* UI Fonts */}
-            <option value="ui-serif">UI Serif</option>
-            <option value="ui-sans-serif">UI Sans Serif</option>
-            <option value="ui-monospace">UI Monospace</option>
-            <option value="ui-rounded">UI Rounded</option>
+          <option value="sans-serif">Sans</option>
+          <option value="serif">Serif</option>
+          <option value="monospace">Monospace</option>
+          <option value="cursive">Cursive</option>
+          <option value="fantasy">Fantasy</option>
+          <option value="system-ui">System UI</option>
 
-            {/* Special */}
-            <option value="emoji">Emoji</option>
-            <option value="math">Math</option>
-            <option value="fangsong">Fangsong</option>
+          {/* UI Fonts */}
+          <option value="ui-serif">UI Serif</option>
+          <option value="ui-sans-serif">UI Sans Serif</option>
+          <option value="ui-monospace">UI Monospace</option>
+          <option value="ui-rounded">UI Rounded</option>
 
-            {/* Global values */}
-            <option value="inherit">Inherit</option>
-            <option value="initial">Initial</option>
-            <option value="revert">Revert</option>
-            <option value="revert-layer">Revert Layer</option>
-            <option value="unset">Unset</option>
+          {/* Special */}
+          <option value="emoji">Emoji</option>
+          <option value="math">Math</option>
+          <option value="fangsong">Fangsong</option>
+
+          {/* Global values */}
+          <option value="inherit">Inherit</option>
+          <option value="initial">Initial</option>
+          <option value="revert">Revert</option>
+          <option value="revert-layer">Revert Layer</option>
+          <option value="unset">Unset</option>
         </select>
+
         <label className="font-semibold text-blue-700 ml-2">Warna:</label>
         <input
           type="color"
           value={cvData.color}
           onChange={(e) => setCvData({ ...cvData, color: e.target.value })}
         />
+        <label className="font-semibold text-blue-700">Desain:</label>
+        <select
+          className="border p-1 rounded text-black"
+          value={cvData.desain}
+          onChange={(e) => setCvData({ ...cvData, desain: e.target.value })}
+        >
+          <option value="desain1">Desain 1</option>
+          <option value="desain2">Desain 2</option>
+        </select>
       </div>
       <button className="bg-blue-600 text-white px-4 py-2 rounded-lg">
         Unduh PDF

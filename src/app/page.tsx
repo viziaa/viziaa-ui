@@ -25,7 +25,8 @@ export default function Home() {
     try {
       await api.post("/cv", { name });
       setShowDialog(false);
-      router.push("/cv");
+
+      router.push("/history");
     } catch (error: any) {
       console.error("Error submitting CV:", error);
       if (error.response?.data?.message === "Tidak ada session") {
@@ -40,7 +41,7 @@ export default function Home() {
             setTimeout(() => {
               Swal.close();
               router.push("/auth/login");
-            }, 2000); // delay 2 detik biar ada efek loading
+            }, 2000);
           },
         });
       }

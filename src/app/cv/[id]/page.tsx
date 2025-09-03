@@ -1,3 +1,5 @@
+"use client";
+
 import CVPage from "@/components/CVPage";
 import Navbar from "@/components/Navbar";
 
