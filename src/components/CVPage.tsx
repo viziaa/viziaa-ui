@@ -1,10 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import CVPreview2, { CVPreview } from "./cv-preview";
-import { CVToolbar } from "./cv-toolbar";
-import CvStepper from "./form-section/form-trigger";
 import api from "@/services/api";
 import { CVPageProps } from "@/types/cv-type";
+import { useEffect, useState } from "react";
+import { CVPreview2 } from "./cv-preview";
+import { CVToolbar } from "./cv-toolbar";
+import CvStepper from "./form-section/form-trigger";
 
 type CVProps = {
   cv_id: string;
@@ -29,7 +29,6 @@ export default function CVPage({ cv_id }: CVProps) {
       about: "",
       avatar: "",
     },
-
     education: [],
     work_experiences: [],
     skills: [],
@@ -102,12 +101,6 @@ export default function CVPage({ cv_id }: CVProps) {
     alert("berhasil tambahkan data tambahan");
   }, [additionData]);
 
-  useEffect(() => {
-    if (additionData.length === 0) return;
-    fetchUser();
-    alert("berhasil fetch");
-  }, [additionData]);
-
   return (
     <div className="grid grid-cols-2 gap-4 p-6 bg-white min-h-screen">
       {/* Kiri: Form */}
@@ -128,6 +121,7 @@ export default function CVPage({ cv_id }: CVProps) {
       <div className="flex flex-col space-y-4">
         <CVToolbar cvData={cvData} setCvData={setCvData} />
         <CVPreview2
+          cvStyle="rounded-xl shadow-lg"
           cvData={cvData}
           setCvData={setCvData}
           setEducationData={setEducationData}

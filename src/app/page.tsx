@@ -25,7 +25,6 @@ export default function Home() {
     try {
       await api.post("/cv", { name });
       setShowDialog(false);
-
       router.push("/history");
     } catch (error: any) {
       console.error("Error submitting CV:", error);

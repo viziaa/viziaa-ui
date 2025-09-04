@@ -24,7 +24,10 @@ export default function HistoryPage() {
       } catch (error: any) {
         console.error("Error fetching CV data:", error);
         setUser(null);
-        if (error.response?.data?.message === "Tidak ada session") {
+        if (
+          error.response?.data?.message === "Tidak ada session" ||
+          "Gagal mendapatkan user"
+        ) {
           Swal.fire({
             title: "Kamu belum login",
             text: "Mengalihkan ke halaman login...",
