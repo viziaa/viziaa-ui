@@ -1,3 +1,4 @@
+import { formatDMY } from "@/lib/date";
 import api from "@/services/api";
 import { useEffect, useState } from "react";
 import { EducationDialog } from "./formEdit-section/education-edit";
@@ -111,14 +112,15 @@ export function CVPreview({ cvData }: any) {
   );
 }
 
-export default function CVPreview2({ cvData, setEducationData }: any) {
+export function CVPreview2({ cvData, setEducationData, cvStyle }: any) {
   return (
     <div
+      id="cv-root"
       style={{
         fontFamily: cvData.font || "sans-serif",
         color: "#d51a52", // default gray-800
       }}
-      className={"w-full mx-auto bg-white rounded-xl shadow-lg overflow-hidden"}
+      className={`w-full mx-auto bg-white ${cvStyle} overflow-hidden`}
     >
       {/* Header */}
       <div
@@ -126,7 +128,7 @@ export default function CVPreview2({ cvData, setEducationData }: any) {
         style={{ backgroundColor: cvData.color || "#000000" }}
       >
         <div>
-          <h1 className="text-3xl font-extrabold">{cvData.user.fullname}</h1>
+          <h1 className="text-3xl font-extrabold">{cvData.name}</h1>
         </div>
         <img
           src={
@@ -147,9 +149,7 @@ export default function CVPreview2({ cvData, setEducationData }: any) {
             <p>Nama: {cvData.user.fullname}</p>
             <p>
               Tanggal Lahir:{" "}
-              {cvData.user.birthdate
-                ? new Date(cvData.user.birthdate).toLocaleDateString()
-                : "-"}
+              {cvData.user.birthdate ? formatDMY(cvData.user.birthdate) : "-"}
             </p>
             <p>Alamat: {cvData.user.address}</p>
             <p>No. Handphone: {cvData.user.phone}</p>
@@ -166,18 +166,16 @@ export default function CVPreview2({ cvData, setEducationData }: any) {
         {/* Pendidikan */}
         <section>
           <h2 className="text-blue-900 font-bold mb-2">PENDIDIKAN</h2>
-          <ul className="list-disc list-inside text-gray-800 space-y-1">
+          <ul className="flex flex-col gap-1 list-disc list-inside text-gray-800">
             {cvData.education.map((edu: any, i: number) => (
               <Dialog key={i}>
                 <DialogTrigger className="cursor-pointer">
-                  <li>
+                  <li className="text-start">
                     {edu.date_in &&
                       !isNaN(new Date(edu.date_in).getTime()) &&
-                      new Date(edu.date_in).toLocaleDateString()}{" "}
-                    -{" "}
-                    {edu.date_out &&
-                      new Date(edu.date_out).toLocaleDateString()}{" "}
-                    | {edu.education_level} {edu.school_name}{" "}
+                      formatDMY(edu.date_in)}{" "}
+                    - {edu.date_out && formatDMY(edu.date_out)} |{" "}
+                    {edu.education_level} | {edu.school_name} |{" "}
                     {edu.school_address}
                   </li>
                 </DialogTrigger>
@@ -196,7 +194,7 @@ export default function CVPreview2({ cvData, setEducationData }: any) {
           <h2 className="text-blue-900 font-bold mb-2">KEAHLIAN</h2>
           <ul className="list-disc list-inside text-gray-800 space-y-1">
             {cvData.skills.map((s: any, i: number) => (
-              <li key={i}>
+              <li key={i} className="text-start">
                 {s.skill_name} | {s.ability_level}
               </li>
             ))}
@@ -208,14 +206,14 @@ export default function CVPreview2({ cvData, setEducationData }: any) {
           <h2 className="text-blue-900 font-bold mb-2">PENGALAMAN KERJA</h2>
           <ul className="text-gray-800 space-y-1">
             {cvData.work_experiences.map((work: any, i: number) => (
-              <li key={i}>
+              <li key={i} className="text-start">
                 {work.date_in &&
                   !isNaN(new Date(work.date_in).getTime()) &&
-                  new Date(work.date_in).toLocaleDateString()}{" "}
+                  formatDMY(work.date_in)}{" "}
                 -{" "}
                 {work.date_in &&
                   !isNaN(new Date(work.date_in).getTime()) &&
-                  new Date(work.date_out).toLocaleDateString()}{" "}
+                  formatDMY(work.date_out)}{" "}
                 | {work.corporate}
               </li>
             ))}
