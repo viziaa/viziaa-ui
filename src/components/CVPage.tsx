@@ -123,6 +123,7 @@ export default function CVPage({ cv_id }: CVProps) {
         <CVPreview2
           cvStyle="rounded-xl shadow-lg"
           cvData={cvData}
+          setCvData={setCvData}
           setEducationData={setEducationData}
         />
       </div>

@@ -6,7 +6,7 @@ export default async function CreateCv({ params }: { params: { id: string } }) {
   return (
     <>
       <Navbar />
-      <CVPage cv_id={id}/>
+      <CVPage cv_id={id} />
     </>
   );
 }

@@ -1,6 +1,8 @@
 import { formatDMY } from "@/lib/date";
 import api from "@/services/api";
+import { Edit, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
+import { EducationDeleteDialog } from "./FormDelete/education-delete";
 import { EducationDialog } from "./formEdit-section/education-edit";
 import { Dialog, DialogTrigger } from "./ui/dialog";
 
@@ -55,64 +57,54 @@ export function CVPreview({ cvData }: any) {
         </div>
       </div>
       <section className="mb-6">
-        {" "}
-        <h2 className="text-lg font-bold border-b pb-1 mb-2">
-          Tentang Saya
-        </h2>{" "}
-        <p className="text-gray-700 leading-relaxed">{cvData.user.about}</p>{" "}
-      </section>{" "}
-      {/* Pendidikan */}{" "}
+        <h2 className="text-lg font-bold border-b pb-1 mb-2">Tentang Saya</h2>
+        <p className="text-gray-700 leading-relaxed">{cvData.user.about}</p>
+      </section>
+      {/* Pendidikan */}
       <section className="mb-6">
-        {" "}
-        <h2 className="text-lg font-bold border-b pb-1 mb-2">
-          Pendidikan
-        </h2>{" "}
+        <h2 className="text-lg font-bold border-b pb-1 mb-2">Pendidikan</h2>
         <ul className="space-y-2">
-          {" "}
           {cvData.education.map((edu: any, i: number) => (
             <li key={i} className="text-gray-800 font-medium">
-              {" "}
-              {edu.date_in} - {edu.date_out} | {edu.school}{" "}
+              {edu.date_in} - {edu.date_out} | {edu.school}
             </li>
-          ))}{" "}
-        </ul>{" "}
-      </section>{" "}
-      {/* Pengalaman Kerja */}{" "}
+          ))}
+        </ul>
+      </section>
+      {/* Pengalaman Kerja */}
       <section className="mb-6">
-        {" "}
         <h2 className="text-lg font-bold border-b pb-1 mb-2">
-          {" "}
-          Pengalaman Kerja{" "}
-        </h2>{" "}
+          Pengalaman Kerja
+        </h2>
         <ul className="space-y-2">
-          {" "}
           {cvData.work_experiences.map((work: any, i: number) => (
             <li key={i} className="text-gray-800 font-medium">
-              {" "}
-              {work.date_in} - {work.date_out} | {work.corporate}{" "}
+              {work.date_in} - {work.date_out} | {work.corporate}
             </li>
-          ))}{" "}
-        </ul>{" "}
-      </section>{" "}
-      {/* Kemampuan */}{" "}
+          ))}
+        </ul>
+      </section>
+      {/* Kemampuan */}
       <section>
-        {" "}
-        <h2 className="text-lg font-bold border-b pb-1 mb-2">Kemampuan</h2>{" "}
+        <h2 className="text-lg font-bold border-b pb-1 mb-2">Kemampuan</h2>
         <ul className="space-y-1 list-disc list-inside">
-          {" "}
           {cvData.skills.map((s: any, i: number) => (
             <li key={i} className="text-gray-800">
-              {" "}
-              {s.skill_name} | {s.ability_level} ⭐{" "}
+              {s.skill_name} | {s.ability_level} ⭐
             </li>
-          ))}{" "}
-        </ul>{" "}
+          ))}
+        </ul>
       </section>
     </div>
   );
 }
 
-export function CVPreview2({ cvData, setEducationData, cvStyle }: any) {
+export function CVPreview2({
+  cvData,
+  setEducationData,
+  setCvData,
+  cvStyle,
+}: any) {
   return (
     <div
       id="cv-root"
@@ -168,23 +160,45 @@ export function CVPreview2({ cvData, setEducationData, cvStyle }: any) {
           <h2 className="text-blue-900 font-bold mb-2">PENDIDIKAN</h2>
           <ul className="flex flex-col gap-1 list-disc list-inside text-gray-800">
             {cvData.education.map((edu: any, i: number) => (
-              <Dialog key={i}>
-                <DialogTrigger className="cursor-pointer">
-                  <li className="text-start">
-                    {edu.date_in &&
-                      !isNaN(new Date(edu.date_in).getTime()) &&
-                      formatDMY(edu.date_in)}{" "}
-                    - {edu.date_out && formatDMY(edu.date_out)} |{" "}
-                    {edu.education_level} | {edu.school_name} |{" "}
-                    {edu.school_address}
-                  </li>
-                </DialogTrigger>
-                <EducationDialog
-                  id={edu.id}
-                  cvData={cvData}
-                  setEducationData={setEducationData}
-                />
-              </Dialog>
+              <li key={i} className="group relative">
+                {edu.date_in &&
+                  !isNaN(new Date(edu.date_in).getTime()) &&
+                  formatDMY(edu.date_in)}{" "}
+                - {edu.date_out && formatDMY(edu.date_out)} | |{" "}
+                {edu.education_level} {edu.school_name} {edu.school_address}
+                <div className="hidden group-hover:flex gap-2 ml-4">
+                  <Dialog>
+                    <DialogTrigger className="cursor-pointer hover:bg-blue-300 hover:rounded hover:p-1">
+                      <Edit className="w-4 h-4" />
+                    </DialogTrigger>
+                    <EducationDialog
+                      id={edu.id}
+                      cvData={cvData}
+                      setEducationData={setEducationData}
+                    />
+                  </Dialog>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="cursor-pointer hover:bg-red-300 hover:rounded hover:p-1">
+                        <Trash className="w-4 h-4 text-red-600" />
+                      </button>
+                    </DialogTrigger>
+
+                    <EducationDeleteDialog
+                      id={edu.id}
+                      onDelete={(deletedId) => {
+                        // ✅ update langsung state cvData pakai setCvData
+                        setCvData((prev: any) => ({
+                          ...prev,
+                          education: prev.education.filter(
+                            (item: any) => item.id !== deletedId
+                          ),
+                        }));
+                      }}
+                    />
+                  </Dialog>
+                </div>
+              </li>
             ))}
           </ul>
         </section>
@@ -196,6 +210,38 @@ export function CVPreview2({ cvData, setEducationData, cvStyle }: any) {
             {cvData.skills.map((s: any, i: number) => (
               <li key={i} className="text-start">
                 {s.skill_name} | {s.ability_level}
+                <div className="hidden group-hover:flex gap-2 ml-4">
+                  <Dialog>
+                    <DialogTrigger className="cursor-pointer hover:bg-blue-300 hover:rounded hover:p-1">
+                      <Edit className="w-4 h-4" />
+                    </DialogTrigger>
+                    <EducationDialog
+                      id={s.id}
+                      cvData={cvData}
+                      setEducationData={setEducationData}
+                    />
+                  </Dialog>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="cursor-pointer hover:bg-red-300 hover:rounded hover:p-1">
+                        <Trash className="w-4 h-4 text-red-600" />
+                      </button>
+                    </DialogTrigger>
+
+                    <EducationDeleteDialog
+                      id={s.id}
+                      onDelete={(deletedId) => {
+                        // ✅ update langsung state cvData pakai setCvData
+                        setCvData((prev: any) => ({
+                          ...prev,
+                          education: prev.education.filter(
+                            (item: any) => item.id !== deletedId
+                          ),
+                        }));
+                      }}
+                    />
+                  </Dialog>
+                </div>
               </li>
             ))}
           </ul>
@@ -219,7 +265,8 @@ export function CVPreview2({ cvData, setEducationData, cvStyle }: any) {
             ))}
           </ul>
         </section>
-        {/* Pengalaman Kerja */}
+
+        {/* Tambahan */}
         <section>
           <h2 className="text-blue-900 font-bold mb-2">Tambahan</h2>
           <ul className="text-gray-800 space-y-1">
