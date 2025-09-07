@@ -1,8 +1,19 @@
 "use client";
 import api from "@/services/api";
+import { useEffect, useRef } from "react";
 import Swal from "sweetalert2";
 
 export function CVToolbar({ cvData, setCvData }: any) {
+  const isFirstRender = useRef(true);
+  useEffect(()=>{
+    if (isFirstRender.current) {
+      isFirstRender.current = false; // skip eksekusi pertama
+      return;
+    }
+    setTimeout(async()=>{
+      await api.put(`/cv/${cvData.id}`, {color:cvData.color, font: cvData.font, desain:cvData.desain})
+    },600)
+  },[cvData.font, cvData.color, cvData.desain])
   const handleDownload = async () => {
     try {
       // tampilkan loading
@@ -103,10 +114,11 @@ export function CVToolbar({ cvData, setCvData }: any) {
         <select
           className="border p-1 rounded text-black"
           value={cvData.desain}
-          onChange={(e) => setCvData({ ...cvData, desain: e.target.value })}
+          onChange={(e) => setCvData({ ...cvData, desain: Number(e.target.value) })}
         >
-          <option value="desain1">Desain 1</option>
-          <option value="desain2">Desain 2</option>
+          <option value="1">Desain 1</option>
+          <option value="2">Desain 2</option>
+          <option value="3">Desain 3</option>
         </select>
       </div>
 

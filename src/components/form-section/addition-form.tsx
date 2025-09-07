@@ -1,10 +1,10 @@
 import api from "@/services/api";
-import { AdditionsProps } from "@/types/cv-type";
+import { FormProps } from "@/types/cv-type";
 import React, { useEffect, useState } from "react";
 
 
 
-export function AdditionForm({ cvData, setAdditionData, setCvData }:AdditionsProps) {
+export function AdditionForm({ cvData, onTrigger, setCvData }:FormProps) {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   
@@ -12,9 +12,7 @@ export function AdditionForm({ cvData, setAdditionData, setCvData }:AdditionsPro
   
   const addAddition = () => {
     const fetchNewAddition = async ()=>{
-    const res = await api.post(`/educations/${cvData.id}`, {question, answer})
-    console.log(res.data)
-    setAdditionData({ id:res.data.id, question, answer})};
+    onTrigger("berhasil fetch data addition")};
     fetchNewAddition()
     setQuestion("");
     setAnswer("");

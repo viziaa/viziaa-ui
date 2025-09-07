@@ -1,9 +1,11 @@
 import api from "@/services/api";
-import { ExperienceItem, ExperienceProps } from "@/types/cv-type";
+import { FormProps } from "@/types/cv-type";
 import React, { useEffect, useState } from "react";
 
-export function WorkExperienceForm({ cvData, setCvData, setExperiencesData }: ExperienceProps) {
+export function WorkExperienceForm({ cvData, setCvData, onTrigger }: FormProps) {
   const [corporate, setCorporate] = useState("");
+  const [position, setPosition] = useState("");
+  const [jobdesk, setJobdesk] = useState("");
   const [dateIn, setDateIn] = useState("");
   const [dateOut, setDateOut] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -12,13 +14,13 @@ export function WorkExperienceForm({ cvData, setCvData, setExperiencesData }: Ex
   const addWork = () => {
     try{
     const fetchNewWork = async ()=>{
-    const res = await api.post(`/experiences/${cvData.id}`, {corporate, date_in: dateIn, date_out: dateOut })
-    console.log(res)
-    setExperiencesData({
-       id:res.data.id, corporate, date_in: new Date(dateIn), date_out: new Date(dateOut)}) 
+    const res = await api.post(`/experiences/${cvData.id}`, {corporate, position, jobdesk, date_in: dateIn, date_out: dateOut })
+    onTrigger(`berhasil fetch data Pekerjaan ${res.data.data.corporate}`)
     };
     fetchNewWork()
     setCorporate("");
+    setPosition("")
+    setJobdesk("")
     setDateIn("");
     setDateOut("");
     } catch (err:any) {
@@ -35,20 +37,20 @@ export function WorkExperienceForm({ cvData, setCvData, setExperiencesData }: Ex
               return {
                 ...prev,
                 work_experiences: [
-                  ...prev.work_experiences, {id:"0", corporate, date_in: new Date(dateIn), date_out: new Date(dateOut), isDraft:true}],
+                  ...prev.work_experiences, {id:"0", corporate, position, jobdesk, date_in: new Date(dateIn), date_out: new Date(dateOut), isDraft:true}],
               };
             }
       
             // kalau sudah ada → ganti data terakhir
             const updated = [...prev.work_experiences];
-            updated[updated.length - 1] = { id:"0", corporate, date_in: new Date(dateIn), date_out: new Date(dateOut), isDraft:true};
+            updated[updated.length - 1] = { id:"0", corporate, position, jobdesk, date_in: new Date(dateIn), date_out: new Date(dateOut), isDraft:true};
       
             return {
               ...prev,
               work_experiences: updated,
             };
           });
-        }, [corporate, dateIn, dateOut]);
+        }, [corporate, position, jobdesk, dateIn, dateOut]);
 
   return (
     <div className="p-4 border rounded-xl shadow-sm shadow-blue-300">
@@ -59,6 +61,20 @@ export function WorkExperienceForm({ cvData, setCvData, setExperiencesData }: Ex
         className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
         value={corporate}
         onChange={(e) => setCorporate(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Jabatan Terakhir"
+        className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+        value={position}
+        onChange={(e) => setPosition(e.target.value)}
+      />
+      <textarea
+        placeholder="Job Desk"
+        className="w-full p-2 mt-2 border text-black placeholder-gray-400 rounded"
+        rows={3}   // ini bikin tinggi awal 3 baris
+        value={jobdesk}
+        onChange={(e) => setJobdesk(e.target.value)}
       />
       <div className="flex gap-2 mt-2">
         <input

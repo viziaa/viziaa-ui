@@ -7,6 +7,7 @@ import {WorkExperienceForm} from "./work-experiencesForm";
 import {SkillsForm} from "./skill-form";
 import {AdditionForm} from "./addition-form";
 import { UserForm } from "./user-form";
+import { FormProps } from "@/types/cv-type";
 
 interface Step {
   id: number;
@@ -14,15 +15,15 @@ interface Step {
   component: React.ReactNode;
 }
 
-export default function CvStepper({ cvData, setCvData, setUserData, setEducationData, setExperiencesData, setSkillData, setAdditionData  }: any) {
+export default function CvStepper({ cvData, setCvData, onTrigger  }: FormProps) {
   const [activeStep, setActiveStep] = useState<number>(1);
 
   const steps: Step[] = [
-    { id: 1, label: "Data Pribadi", component: <UserForm cvData={cvData} setCvData={setCvData} setUserData={setUserData} /> },
-    { id: 2, label: "Pendidikan", component: <EducationForm cvData={cvData} setCvData={setCvData} setEducationData={setEducationData} /> },
-    { id: 3, label: "Pengalaman Kerja", component: <WorkExperienceForm cvData={cvData} setCvData={setCvData} setExperiencesData={setExperiencesData} /> },
-    { id: 4, label: "Skill", component: <SkillsForm cvData={cvData} setCvData={setCvData} setSkillData={setSkillData} /> },
-    { id: 5, label: "Lainnya", component: <AdditionForm cvData={cvData}  setAdditionData={setAdditionData} setCvData={setCvData} /> },
+    { id: 1, label: "Data Pribadi", component: <UserForm cvData={cvData} setCvData={setCvData} onTrigger={onTrigger} /> },
+    { id: 2, label: "Pendidikan", component: <EducationForm cvData={cvData} setCvData={setCvData} onTrigger={onTrigger} /> },
+    { id: 3, label: "Pengalaman Kerja", component: <WorkExperienceForm cvData={cvData} setCvData={setCvData} onTrigger={onTrigger}/> },
+    { id: 4, label: "Skill", component: <SkillsForm cvData={cvData} setCvData={setCvData} onTrigger={onTrigger} /> },
+    { id: 5, label: "Lainnya", component: <AdditionForm cvData={cvData}  onTrigger={onTrigger} setCvData={setCvData} /> },
     // { id: 4, label: "Organisasi", component: <WorkExperienceForm cvData={cvData} setCvData={setCvData} /> },
   ];
  

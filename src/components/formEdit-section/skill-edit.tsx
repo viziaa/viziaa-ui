@@ -1,18 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import api from "@/services/api";
-import { CVPageProps, EducationItem } from "@/types/cv-type";
+import { EditDialogProps } from "@/types/cv-type";
 
-interface SkillDialogProps {
- cvData: CVPageProps
- id:string
- setSkillData:({id, education_level, school_name, school_address, date_in, date_out}: EducationItem)=> void
-}
 
-export function SkillDialog({ cvData, id, setSkillData }:SkillDialogProps) {
+export function SkillDialog({ cvData, id, onTrigger }:EditDialogProps) {
   const [skill, setSkill] = useState("");
   const [level, setLevel] = useState("");
   const [certificate, setCertificate] = useState("");
@@ -42,7 +37,7 @@ export function SkillDialog({ cvData, id, setSkillData }:SkillDialogProps) {
         certificate: certificate,
         certified: certified,
       });
-      setSkillData(res.data)
+      onTrigger(`Berhasil edit data skill ${res.data.data.skill_name}`)
      
     } catch (err) {
       console.error("Error save skill", err);
@@ -87,9 +82,11 @@ export function SkillDialog({ cvData, id, setSkillData }:SkillDialogProps) {
          
           
         <DialogFooter>
-          <Button onClick={handleSave} disabled={loading}>
-            {loading ? "Menyimpan..." : "Simpan"}
-            </Button>
+          <DialogClose asChild>
+              <Button onClick={handleSave} disabled={loading}>
+                {loading ? "Menyimpan..." : "Simpan"}
+              </Button>
+           </DialogClose>
         </DialogFooter>
       </DialogContent>
   );
