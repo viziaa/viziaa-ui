@@ -2,7 +2,7 @@
 import api from "@/services/api";
 import { CVPageProps } from "@/types/cv-type";
 import { useEffect, useState } from "react";
-import { CVPreview2, CVPreview3, CVPreview1 } from "./cv-preview";
+import { CVPreview1, CVPreview2, CVPreview3 } from "./cv-preview";
 import { CVToolbar } from "./cv-toolbar";
 import CvStepper from "./form-section/form-trigger";
 
@@ -55,7 +55,7 @@ export default function CVPage({ cv_id }: CVProps) {
           />
         );
 
-       case 3:
+      case 3:
         return (
           <CVPreview3
             cvData={cvData}
@@ -107,10 +107,10 @@ export default function CVPage({ cv_id }: CVProps) {
     }
   };
 
-   function onTrigger(text:string){
-    fetchUser()
-    alert(text)
-   }
+  function onTrigger(text: string) {
+    fetchUser();
+    alert(text);
+  }
   return (
     <div className="grid grid-cols-2 gap-4 p-6 bg-white min-h-screen">
       {/* Kiri: Form */}

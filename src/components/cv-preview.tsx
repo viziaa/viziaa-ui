@@ -23,92 +23,7 @@ interface User {
   birthdate: string;
 }
 
-export function CVPreview1({ cvData }: any) {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const fetchCV = async () => {
-      try {
-        const Aresponse = await api.get("/user");
-        setUser(Aresponse.data); // Simpan objek user
-      } catch (error) {
-        console.error("Error fetching CV data:", error);
-        setUser(null);
-      }
-    };
-
-    fetchCV();
-  }, []);
-
-  return (
-    <div className="p-8 bg-white rounded-xl shadow-lg w-full max-w-7xl mx-auto">
-      <div className="flex items-center gap-6 border-b pb-6 mb-6">
-        <img
-          src={
-            cvData.photo ||
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjKU8YDosyoTjWVSrMGvkVLFbrx2Xyn4qPrg&s"
-          }
-          alt="Profile"
-          className="w-28 h-28 rounded-full object-cover border-4 border-white shadow-md"
-        />
-        <div>
-          <h1 className="text-2xl font-serif">{cvData.user.fullname}</h1>
-          <p className="text-gray-600">
-            {cvData.user.phone_number} | {cvData.user.email}
-          </p>
-          <p className="font-medium mt-1">
-            {cvData.user.address}, {cvData.user.city}, {cvData.user.region}
-          </p>
-        </div>
-      </div>
-      <section className="mb-6">
-        <h2 className="text-lg font-bold border-b pb-1 mb-2">Tentang Saya</h2>
-        <p className="text-gray-700 leading-relaxed">{cvData.user.about}</p>
-      </section>
-      {/* Pendidikan */}
-      <section className="mb-6">
-        <h2 className="text-lg font-bold border-b pb-1 mb-2">Pendidikan</h2>
-        <ul className="space-y-2">
-          {cvData.education.map((edu: any, i: number) => (
-            <li key={i} className="text-gray-800 font-medium">
-              {edu.date_in} - {edu.date_out} | {edu.school}
-            </li>
-          ))}
-        </ul>
-      </section>
-      {/* Pengalaman Kerja */}
-      <section className="mb-6">
-        <h2 className="text-lg font-bold border-b pb-1 mb-2">
-          Pengalaman Kerja
-        </h2>
-        <ul className="space-y-2">
-          {cvData.work_experiences.map((work: any, i: number) => (
-            <li key={i} className="text-gray-800 font-medium">
-              {work.date_in} - {work.date_out} | {work.corporate}
-            </li>
-          ))}
-        </ul>
-      </section>
-      {/* Kemampuan */}
-      <section>
-        <h2 className="text-lg font-bold border-b pb-1 mb-2">Kemampuan</h2>
-        <ul className="space-y-1 list-disc list-inside">
-          {cvData.skills.map((s: any, i: number) => (
-            <li key={i} className="text-gray-800">
-              {s.skill_name} | {s.ability_level} ⭐
-            </li>
-          ))}
-        </ul>
-      </section>
-    </div>
-  );
-}
-
-export function CVPreview2({
-  cvData,
-  setCvData,
-  onTrigger,
-}: any) {
+export function CVPreview2({ cvData, setCvData, onTrigger }: any) {
   return (
     <div
       id="cv-root"
@@ -147,7 +62,10 @@ export function CVPreview2({
               Tanggal Lahir:
               {cvData.user.birthdate ? formatDMY(cvData.user.birthdate) : "-"}
             </p>
-            <p>Alamat: {cvData.user.address}, {cvData.user.city}, {cvData.user.region}</p>
+            <p>
+              Alamat: {cvData.user.address}, {cvData.user.city},{" "}
+              {cvData.user.region}
+            </p>
             <p>No. Handphone: {cvData.user.phone}</p>
             <p>Email: {cvData.user.email}</p>
           </div>
@@ -156,10 +74,7 @@ export function CVPreview2({
               <DialogTrigger className="cursor-pointer hover:bg-blue-300 hover:rounded hover:p-1">
                 <Edit className="w-4 h-4" />
               </DialogTrigger>
-              <UserDialog
-                cvData={cvData}
-                onTrigger={onTrigger}
-              />
+              <UserDialog cvData={cvData} onTrigger={onTrigger} />
             </Dialog>
           </div>
         </section>
@@ -173,10 +88,7 @@ export function CVPreview2({
               <DialogTrigger className="cursor-pointer hover:bg-blue-300 hover:rounded hover:p-1">
                 <Edit className="w-4 h-4" />
               </DialogTrigger>
-              <UserDialog
-                cvData={cvData}
-                onTrigger={onTrigger}
-              />
+              <UserDialog cvData={cvData} onTrigger={onTrigger} />
             </Dialog>
           </div>
         </section>
@@ -192,7 +104,8 @@ export function CVPreview2({
                   !isNaN(new Date(edu.date_in).getTime()) &&
                   formatYear(edu.date_in)}{" "}
                 - {edu.date_out && formatYear(edu.date_out)} | |{" "}
-                {edu.education_level}{edu.major && edu.major} {edu.school_name} {edu.school_address}
+                {edu.education_level}
+                {edu.major && edu.major} {edu.school_name} {edu.school_address}
                 <div className="hidden group-hover:flex gap-2 ml-4">
                   <Dialog>
                     <DialogTrigger className="cursor-pointer hover:bg-blue-300 hover:rounded hover:p-1">
@@ -281,14 +194,12 @@ export function CVPreview2({
             {cvData.work_experiences.map((work: any, i: number) => (
               <li key={i} className="text-start group relative flex flex-col">
                 <div>
-              {work.date_in &&
-            !isNaN(new Date(work.date_in).getTime()) &&
-            formatDuration(work.date_in, work.date_out)}{" "}
-          | {work.corporate} - {work.position}
+                  {work.date_in &&
+                    !isNaN(new Date(work.date_in).getTime()) &&
+                    formatDuration(work.date_in, work.date_out)}{" "}
+                  | {work.corporate} - {work.position}
                 </div>
-                <div>
-                  {work.jobdesk}
-                </div>
+                <div>{work.jobdesk}</div>
                 <div className="hidden group-hover:flex gap-2 ml-4">
                   <Dialog>
                     <DialogTrigger className="cursor-pointer hover:bg-blue-300 hover:rounded hover:p-1">
@@ -342,11 +253,189 @@ export function CVPreview2({
   );
 }
 
-export function CVPreview3({
-  cvData,
-  
-  cvStyle,
-}: any) {
+export function CVPreview1({ cvData, setCvData, onTrigger }: any) {
+  return (
+    <div className="p-8 bg-white rounded-xl shadow-lg w-full max-w-7xl mx-auto">
+      {/* Header */}
+      <div className="flex items-center gap-6 border-b pb-6 mb-6">
+        <img
+          src={
+            cvData.user.avatar ||
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjKU8YDosyoTjWVSrMGvkVLFbrx2Xyn4qPrg&s"
+          }
+          alt="Profile"
+          className="w-28 h-28 rounded-full object-cover border-4 border-white shadow-md"
+        />
+        <div>
+          <h1 className="text-2xl font-serif">{cvData.user.fullname}</h1>
+          <p className="text-gray-600">
+            {cvData.user.phone} | {cvData.user.email}
+          </p>
+          <p className="font-medium mt-1">
+            {cvData.user.address}, {cvData.user.city}, {cvData.user.region}
+          </p>
+        </div>
+      </div>
+
+      {/* Tentang Saya */}
+      <section className="mb-6 group relative">
+        <h2 className="text-lg font-bold border-b pb-1 mb-2">Tentang Saya</h2>
+        <p className="text-gray-700 leading-relaxed">{cvData.user.about}</p>
+        <div className="hidden group-hover:flex gap-2 ml-4">
+          <Dialog>
+            <DialogTrigger className="cursor-pointer hover:bg-gray-200 hover:rounded hover:p-1">
+              <Edit className="w-4 h-4" />
+            </DialogTrigger>
+            <UserDialog cvData={cvData} onTrigger={onTrigger} />
+          </Dialog>
+        </div>
+      </section>
+
+      {/* Pendidikan */}
+      <section className="mb-6">
+        <h2 className="text-lg font-bold border-b pb-1 mb-2">Pendidikan</h2>
+        <ul className="space-y-2">
+          {cvData.education.map((edu: any) => (
+            <li
+              key={edu.id}
+              className="group relative text-gray-800 font-medium"
+            >
+              {edu.date_in && formatYear(edu.date_in)} -{" "}
+              {edu.date_out && formatYear(edu.date_out)} | {edu.education_level}{" "}
+              {edu.major && `- ${edu.major}`} {edu.school_name},{" "}
+              {edu.school_address}
+              <div className="hidden group-hover:flex gap-2 ml-4">
+                <Dialog>
+                  <DialogTrigger className="cursor-pointer hover:bg-gray-200 hover:rounded hover:p-1">
+                    <Edit className="w-4 h-4" />
+                  </DialogTrigger>
+                  <EducationDialog
+                    id={edu.id}
+                    cvData={cvData}
+                    onTrigger={onTrigger}
+                  />
+                </Dialog>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="cursor-pointer hover:bg-red-200 hover:rounded hover:p-1">
+                      <Trash className="w-4 h-4 text-red-600" />
+                    </button>
+                  </DialogTrigger>
+                  <EducationDeleteDialog
+                    id={edu.id}
+                    onDelete={(deletedId) => {
+                      setCvData((prev: any) => ({
+                        ...prev,
+                        education: prev.education.filter(
+                          (item: any) => item.id !== deletedId
+                        ),
+                      }));
+                    }}
+                  />
+                </Dialog>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Pengalaman Kerja */}
+      <section className="mb-6">
+        <h2 className="text-lg font-bold border-b pb-1 mb-2">
+          Pengalaman Kerja
+        </h2>
+        <ul className="space-y-2">
+          {cvData.work_experiences.map((work: any) => (
+            <li
+              key={work.id}
+              className="group relative text-gray-800 font-medium flex flex-col"
+            >
+              <div>
+                {work.date_in && formatDuration(work.date_in, work.date_out)} |{" "}
+                {work.corporate} - {work.position}
+              </div>
+              <div>{work.jobdesk}</div>
+              <div className="hidden group-hover:flex gap-2 ml-4">
+                <Dialog>
+                  <DialogTrigger className="cursor-pointer hover:bg-gray-200 hover:rounded hover:p-1">
+                    <Edit className="w-4 h-4" />
+                  </DialogTrigger>
+                  <ExperienceDialog
+                    id={work.id}
+                    cvData={cvData}
+                    onTrigger={onTrigger}
+                  />
+                </Dialog>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="cursor-pointer hover:bg-red-200 hover:rounded hover:p-1">
+                      <Trash className="w-4 h-4 text-red-600" />
+                    </button>
+                  </DialogTrigger>
+                  <ExperienceDeleteDialog
+                    id={work.id}
+                    onDelete={(deletedId) => {
+                      setCvData((prev: any) => ({
+                        ...prev,
+                        work_experiences: prev.work_experiences.filter(
+                          (item: any) => item.id !== deletedId
+                        ),
+                      }));
+                    }}
+                  />
+                </Dialog>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Keahlian */}
+      <section>
+        <h2 className="text-lg font-bold border-b pb-1 mb-2">Keahlian</h2>
+        <ul className="space-y-1 list-disc list-inside">
+          {cvData.skills.map((s: any) => (
+            <li key={s.id} className="group relative text-gray-800">
+              {s.skill_name} | {s.ability_level} ⭐
+              <div className="hidden group-hover:flex gap-2 ml-4">
+                <Dialog>
+                  <DialogTrigger className="cursor-pointer hover:bg-gray-200 hover:rounded hover:p-1">
+                    <Edit className="w-4 h-4" />
+                  </DialogTrigger>
+                  <SkillDialog
+                    id={s.id}
+                    cvData={cvData}
+                    onTrigger={onTrigger}
+                  />
+                </Dialog>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="cursor-pointer hover:bg-red-200 hover:rounded hover:p-1">
+                      <Trash className="w-4 h-4 text-red-600" />
+                    </button>
+                  </DialogTrigger>
+                  <SkillDeleteDialog
+                    id={s.id}
+                    onDelete={(deletedId) => {
+                      setCvData((prev: any) => ({
+                        ...prev,
+                        skills: prev.skills.filter(
+                          (item: any) => item.id !== deletedId
+                        ),
+                      }));
+                    }}
+                  />
+                </Dialog>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  );
+}
+
+export function CVPreview3({ cvData, setCvData, onTrigger, cvStyle }: any) {
   return (
     <div
       id="cv-root"
@@ -383,13 +472,21 @@ export function CVPreview3({
         {/* Left Column */}
         <div className="col-span-1 space-y-6">
           {/* Tentang Saya */}
-          <section>
+          <section className="group relative">
             <h2 className="text-lg font-semibold text-blue-700 border-b pb-1 mb-2">
               Tentang Saya
             </h2>
             <p className="text-sm text-gray-700 leading-relaxed">
               {cvData.user.about}
             </p>
+            <div className="hidden group-hover:flex gap-2 ml-4">
+              <Dialog>
+                <DialogTrigger className="cursor-pointer hover:bg-gray-200 hover:rounded hover:p-1">
+                  <Edit className="w-4 h-4" />
+                </DialogTrigger>
+                <UserDialog cvData={cvData} onTrigger={onTrigger} />
+              </Dialog>
+            </div>
           </section>
 
           {/* Keahlian */}
@@ -398,10 +495,40 @@ export function CVPreview3({
               Keahlian
             </h2>
             <ul className="space-y-1 text-sm text-gray-700">
-              {cvData.skills.map((s: any, i: number) => (
-                <li key={i} className="flex justify-between">
+              {cvData.skills.map((s: any) => (
+                <li key={s.id} className="flex justify-between group relative">
                   <span>{s.skill_name}</span>
                   <span className="text-gray-500">{s.ability_level}</span>
+                  <div className="hidden group-hover:flex gap-2 ml-4">
+                    <Dialog>
+                      <DialogTrigger className="cursor-pointer hover:bg-gray-200 hover:rounded hover:p-1">
+                        <Edit className="w-4 h-4" />
+                      </DialogTrigger>
+                      <SkillDialog
+                        id={s.id}
+                        cvData={cvData}
+                        onTrigger={onTrigger}
+                      />
+                    </Dialog>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="cursor-pointer hover:bg-red-200 hover:rounded hover:p-1">
+                          <Trash className="w-4 h-4 text-red-600" />
+                        </button>
+                      </DialogTrigger>
+                      <SkillDeleteDialog
+                        id={s.id}
+                        onDelete={(deletedId) => {
+                          setCvData((prev: any) => ({
+                            ...prev,
+                            skills: prev.skills.filter(
+                              (item: any) => item.id !== deletedId
+                            ),
+                          }));
+                        }}
+                      />
+                    </Dialog>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -431,8 +558,11 @@ export function CVPreview3({
               Pendidikan
             </h2>
             <ul className="space-y-3">
-              {cvData.education.map((edu: any, i: number) => (
-                <li key={i} className="text-sm text-gray-700">
+              {cvData.education.map((edu: any) => (
+                <li
+                  key={edu.id}
+                  className="text-sm text-gray-700 group relative"
+                >
                   <div className="font-medium text-gray-900">
                     {edu.education_level} {edu.major && `- ${edu.major}`}
                   </div>
@@ -443,7 +573,36 @@ export function CVPreview3({
                   <div>
                     {edu.school_name}, {edu.school_address}
                   </div>
-                  
+                  <div className="hidden group-hover:flex gap-2 ml-4">
+                    <Dialog>
+                      <DialogTrigger className="cursor-pointer hover:bg-gray-200 hover:rounded hover:p-1">
+                        <Edit className="w-4 h-4" />
+                      </DialogTrigger>
+                      <EducationDialog
+                        id={edu.id}
+                        cvData={cvData}
+                        onTrigger={onTrigger}
+                      />
+                    </Dialog>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="cursor-pointer hover:bg-red-200 hover:rounded hover:p-1">
+                          <Trash className="w-4 h-4 text-red-600" />
+                        </button>
+                      </DialogTrigger>
+                      <EducationDeleteDialog
+                        id={edu.id}
+                        onDelete={(deletedId) => {
+                          setCvData((prev: any) => ({
+                            ...prev,
+                            education: prev.education.filter(
+                              (item: any) => item.id !== deletedId
+                            ),
+                          }));
+                        }}
+                      />
+                    </Dialog>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -455,20 +614,54 @@ export function CVPreview3({
               Pengalaman Kerja
             </h2>
             <ul className="space-y-3">
-              {cvData.work_experiences.map((work: any, i: number) => (
-                <li key={i} className="text-sm text-gray-700">
+              {cvData.work_experiences.map((work: any) => (
+                <li
+                  key={work.id}
+                  className="text-sm text-gray-700 group relative"
+                >
                   <div className="flex justify-between">
                     <span className="font-medium text-gray-900">
                       {work.position} - {work.corporate}
                     </span>
                     <span className="text-xs text-gray-500">
+                      {work.date_in && formatYear(work.date_in)} -{" "}
+                      {work.date_out && formatYear(work.date_out)} |{" "}
                       {work.date_in &&
-                        formatYear(work.date_in)} - 
-                      {work.date_out && formatYear(work.date_out)}
-                      | {work.date_in && work.date_out && formatDuration(work.date_in, work.date_out)}
+                        work.date_out &&
+                        formatDuration(work.date_in, work.date_out)}
                     </span>
                   </div>
                   <p className="text-gray-600">{work.jobdesk}</p>
+                  <div className="hidden group-hover:flex gap-2 ml-4">
+                    <Dialog>
+                      <DialogTrigger className="cursor-pointer hover:bg-gray-200 hover:rounded hover:p-1">
+                        <Edit className="w-4 h-4" />
+                      </DialogTrigger>
+                      <ExperienceDialog
+                        id={work.id}
+                        cvData={cvData}
+                        onTrigger={onTrigger}
+                      />
+                    </Dialog>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="cursor-pointer hover:bg-red-200 hover:rounded hover:p-1">
+                          <Trash className="w-4 h-4 text-red-600" />
+                        </button>
+                      </DialogTrigger>
+                      <ExperienceDeleteDialog
+                        id={work.id}
+                        onDelete={(deletedId) => {
+                          setCvData((prev: any) => ({
+                            ...prev,
+                            work_experiences: prev.work_experiences.filter(
+                              (item: any) => item.id !== deletedId
+                            ),
+                          }));
+                        }}
+                      />
+                    </Dialog>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -478,4 +671,3 @@ export function CVPreview3({
     </div>
   );
 }
-

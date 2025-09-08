@@ -1,15 +1,13 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import api from "@/services/api";
+import MySwal from "sweetalert2";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import api from "@/services/api";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-
-const MySwal = withReactContent(Swal);
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -28,7 +26,7 @@ export default function LoginPage() {
     try {
       await api.post("/auth/login", form);
 
-      MySwal.close(); // Tutup loading
+      MySwal.close();
       await MySwal.fire({
         icon: "success",
         title: "Login Successful",
@@ -40,8 +38,8 @@ export default function LoginPage() {
       router.push("/");
     } catch (err: any) {
       console.error(err);
-      setError(err.response.data.message || "Registration failed");
-      MySwal.close(); // Tutup loading
+      setError(err.response?.data?.message || "Login failed");
+      MySwal.close();
       MySwal.fire({
         icon: "error",
         title: "Login Failed",
@@ -53,55 +51,109 @@ export default function LoginPage() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-xs sm:max-w-md mx-auto my-auto mt-10 p-6 border rounded-md shadow-md space-y-4 sm:space-y-6"
-    >
-      <h1 className="text-2xl sm:text-3xl font-semibold text-center">Login</h1>
+    <main className="min-h-screen flex bg-gray-50">
+      {/* Left Section - Branding & Animation */}
+      <div className="hidden lg:flex w-1/2 flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-12">
+        {/* App Title */}
+        <h1 className="text-5xl font-extrabold text-gray-900 tracking-tight">
+          viziaa<span className="text-blue-500">App</span>
+        </h1>
+        <p className="mt-4 text-lg text-gray-600 max-w-md text-center">
+          The fastest way to craft a{" "}
+          <span className="font-semibold">professional CV</span>. Build,
+          customize, and download your resume in minutes 🚀
+        </p>
 
-      <div className="space-y-1 sm:space-y-2">
-        <Label htmlFor="email" className="text-sm sm:text-base">
-          Email
-        </Label>
-        <Input
-          id="email"
-          type="email"
-          name="email"
-          placeholder="you@example.com"
-          value={form.email}
-          onChange={handleChange}
-          className="text-sm sm:text-base"
-          required
-        />
+        {/* Animated Elements */}
+        <div className="relative mt-10 w-72 h-72">
+          <motion.div
+            className="absolute w-32 h-32 rounded-full bg-blue-400/40"
+            animate={{ x: [0, 80, 0], y: [0, -60, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute w-24 h-24 rounded-full bg-indigo-400/40"
+            animate={{ x: [0, -70, 0], y: [0, 60, 0] }}
+            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute w-20 h-20 rounded-full bg-blue-300/40"
+            animate={{ y: [0, -80, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </div>
       </div>
 
-      <div className="space-y-1 sm:space-y-2">
-        <Label htmlFor="password" className="text-sm sm:text-base">
-          Password
-        </Label>
-        <Input
-          id="password"
-          type="password"
-          name="password"
-          placeholder="Your password"
-          value={form.password}
-          onChange={handleChange}
-          className="text-sm sm:text-base"
-          required
-        />
-        {error && <p className="text-sm text-red-600 text-center">{error}</p>}
+      {/* Right Section - Login */}
+      <div className="flex w-full lg:w-1/2 items-center justify-center p-8">
+        <div className="w-full max-w-md space-y-8">
+          {/* Login Box */}
+          <div className="bg-white shadow-md rounded-2xl p-8 space-y-6 border">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-gray-900">
+                Welcome Back 👋
+              </h2>
+              <p className="mt-1 text-sm text-gray-500">
+                Sign in to continue your journey
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-1">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="space-y-1">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  name="password"
+                  placeholder="Your password"
+                  value={form.password}
+                  onChange={handleChange}
+                  required
+                />
+                {error && (
+                  <p className="text-sm text-red-600 text-center mt-1">
+                    {error}
+                  </p>
+                )}
+              </div>
+
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full rounded-xl py-2 font-medium"
+              >
+                {loading ? "Processing..." : "Login"}
+              </Button>
+            </form>
+          </div>
+
+          {/* Register CTA */}
+          <div className="bg-white border rounded-2xl p-6 text-center shadow-sm">
+            <p className="text-sm text-gray-600">
+              Don&apos;t have an account?{" "}
+              <a
+                href="/auth/register"
+                className="text-blue-500 font-semibold hover:underline"
+              >
+                Register
+              </a>
+            </p>
+          </div>
+        </div>
       </div>
-
-      <Button type="submit" disabled={loading} className="w-full">
-        {loading ? "Processing..." : "Login"}
-      </Button>
-
-      <p className="text-center text-sm text-muted-foreground">
-        Don't have an account?{" "}
-        <a href="/auth/register" className="text-blue-500 hover:underline">
-          Register
-        </a>
-      </p>
-    </form>
+    </main>
   );
 }

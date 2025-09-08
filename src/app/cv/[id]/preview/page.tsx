@@ -13,6 +13,7 @@ export default function CVPage() {
     name: "Nama Anda",
     font: "",
     color: "#d51a52",
+    desain: 1,
     user: {
       id: "0",
       email: "",
