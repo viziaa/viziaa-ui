@@ -1,19 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import api from "@/services/api";
-import { CVPageProps, EducationItem } from "@/types/cv-type";
+import { EditDialogProps } from "@/types/cv-type";
 
-interface ExperienceDialogProps {
- cvData: CVPageProps
- id:string
- setExperienceData:({id, education_level, school_name, school_address, date_in, date_out}: EducationItem)=> void
-}
-
-export function ExperienceDialog({ cvData, id, setExperienceData }:ExperienceDialogProps) {
+export function ExperienceDialog({ cvData, id, onTrigger }:EditDialogProps) {
   const [corporate, setCorporate] = useState("");
+  const [position, setPosition] = useState("");
+  const [jobdesk, setJobdesk] = useState("");
   const [dateIn, setDateIn] = useState("");
   const [dateOut, setDateOut] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,8 +18,21 @@ export function ExperienceDialog({ cvData, id, setExperienceData }:ExperienceDia
     const exp = cvData.work_experiences.find((e) => e.id === id);
     if(!exp) return
         setCorporate(exp.corporate)
-        setDateIn(new Date(exp.date_in).toISOString().split("T")[0])
-        setDateOut(new Date(exp.date_out).toISOString().split("T")[0])
+        setPosition(exp.position)
+        setJobdesk(exp.jobdesk)
+        if (exp.date_in) {
+          const dateIn = new Date(exp.date_in);
+          if (!isNaN(dateIn.getTime())) {
+            setDateIn(dateIn.toISOString().split("T")[0]);
+          }
+        }
+
+         if (exp.date_out) {
+          const dateOut = new Date(exp.date_out);
+          if (!isNaN(dateOut.getTime())) {
+            setDateOut(dateOut.toISOString().split("T")[0]);
+          }
+        }
   },[])
 
   const handleSave = async () => {
@@ -31,11 +40,13 @@ export function ExperienceDialog({ cvData, id, setExperienceData }:ExperienceDia
       setLoading(true);
       const res = await api.put(`/experiences/${id}`, {
         corporate: corporate,
+        position,
+        jobdesk,
         date_in: dateIn,
         date_out: dateOut,
       });
 
-      setExperienceData(res.data)
+      onTrigger(`berhasil edit data Pengalam Kerja ${res.data.data.corporate}`)
      
     } catch (err) {
       console.error("Error save experience", err);
@@ -58,6 +69,20 @@ export function ExperienceDialog({ cvData, id, setExperienceData }:ExperienceDia
                 value={corporate}
                 onChange={(e) => setCorporate(e.target.value)}
             />
+            <input
+              type="text"
+              placeholder="Jabatan Terakhir"
+              className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+              value={position}
+              onChange={(e) => setPosition(e.target.value)}
+            />
+            <textarea
+              placeholder="Job Desk"
+              className="w-full p-2 mt-2 border text-black placeholder-gray-400 rounded"
+              rows={3}   // ini bikin tinggi awal 3 baris
+              value={jobdesk}
+              onChange={(e) => setJobdesk(e.target.value)}
+            />
             <div className="flex gap-2 mt-2">
                 <input
                     type="date"
@@ -76,9 +101,11 @@ export function ExperienceDialog({ cvData, id, setExperienceData }:ExperienceDia
          
           
         <DialogFooter>
-          <Button onClick={handleSave} disabled={loading}>
-            {loading ? "Menyimpan..." : "Simpan"}
-            </Button>
+          <DialogClose asChild>
+              <Button onClick={handleSave} disabled={loading}>
+                {loading ? "Menyimpan..." : "Simpan"}
+              </Button>
+           </DialogClose>
         </DialogFooter>
       </DialogContent>
   );

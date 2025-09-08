@@ -1,8 +1,8 @@
 import api from "@/services/api";
-import { UserProps } from "@/types/cv-type";
+import { FormProps } from "@/types/cv-type";
 import React, { useEffect, useState } from "react";
 
-export function UserForm({ cvData, setUserData, setCvData }:UserProps) {
+export function UserForm({ cvData, onTrigger, setCvData }:FormProps) {
   const [id, setId] = useState("");
   const [email, setEmail] = useState("");
   const [nickname, setNickname] = useState("");
@@ -36,9 +36,8 @@ export function UserForm({ cvData, setUserData, setCvData }:UserProps) {
       const res = await api.put(`/user/data`, formData ,{
         headers: { "Content-Type": "multipart/form-data" }
       });
-      console.log(res.data);
 
-      setUserData(res.data);
+      onTrigger(`berhasil ubah data user ${res.data.data.nickname}`);
 
     } catch (err: any) {
       console.error("Fetch User error", err);

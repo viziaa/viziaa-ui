@@ -1,10 +1,11 @@
 import api from "@/services/api";
-import { EducationProps } from "@/types/cv-type";
+import { FormProps } from "@/types/cv-type";
 import React, { useEffect, useState } from "react";
 
-export function EducationForm({ cvData, setEducationData, setCvData }: EducationProps) {
+export function EducationForm({ cvData, onTrigger, setCvData }: FormProps) {
   const [school, setSchool] = useState("");
   const [level, setLevel] = useState("");
+  const [major, setMajor] = useState("")
   const [address, setAddress] = useState("");
   const [dateIn, setDateIn] = useState("");
   const [dateOut, setDateOut] = useState("");
@@ -14,13 +15,12 @@ export function EducationForm({ cvData, setEducationData, setCvData }: Education
   const addEducation = () => {
     try{
       const fetchNewEducation = async ()=>{
-      const res = await api .post(`/educations/${cvData.id}`, {education_level:level, school_name:school, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut) })
-      console.log(res)
-      setEducationData({
-        id:res.data.id ,education_level:level, school_name:school, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut) 
-      })};
+      const res = await api .post(`/educations/${cvData.id}`, {education_level:level, school_name:school, major, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut) })
+      onTrigger(`Berhasil Fetch Data Pendidikan ${res.data.data.education_level}`)
+      };
       fetchNewEducation()
       setSchool("");
+      setMajor("");
       setLevel("");
       setAddress("")
       setDateIn("");
@@ -40,20 +40,20 @@ export function EducationForm({ cvData, setEducationData, setCvData }: Education
             ...prev,
             education: [
               ...prev.education,
-              { id:"0", education_level:level, school_name:school, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut), isDraft:true }],
+              { id:"0", education_level:level, school_name:school, major, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut), isDraft:true }],
           };
         }
   
         // kalau sudah ada → ganti data terakhir
         const updated = [...prev.education];
-        updated[updated.length - 1] = { id:"0", education_level:level, school_name:school, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut), isDraft:true };
+        updated[updated.length - 1] = { id:"0", education_level:level, school_name:school, major, school_address:address, date_in:new Date(dateIn), date_out: new Date(dateOut), isDraft:true };
   
         return {
           ...prev,
           education: updated,
         };
       });
-    }, [school, level, address, dateIn, dateOut]);
+    }, [school, major, level, address, dateIn, dateOut]);
 
   return (
     <div className="p-4 border rounded-xl shadow-sm shadow-blue-300">
@@ -72,6 +72,14 @@ export function EducationForm({ cvData, setEducationData, setCvData }: Education
         <option value="s2 / magister">S2 / magister</option>
         <option value="s3 / doktor">S3 / doktor</option>
       </select>
+      {["sma", "s1 / sarjana", "s2 / magister", "s3 / doktor"].includes(level?.toLowerCase())  &&
+      <input
+        type="text"
+        placeholder="Jurusan"
+        className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+        value={major}
+        onChange={(e) => setMajor(e.target.value)}
+      />}
       <input
         type="text"
         placeholder="Nama Sekolah"

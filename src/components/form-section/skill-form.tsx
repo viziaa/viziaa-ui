@@ -1,8 +1,8 @@
 import api from "@/services/api";
-import { SkillProps } from "@/types/cv-type";
+import { FormProps } from "@/types/cv-type";
 import React, { useEffect, useState } from "react";
 
-export function SkillsForm({ cvData, setCvData, setSkillData }: SkillProps) {
+export function SkillsForm({ cvData, setCvData, onTrigger }: FormProps) {
   const [skill, setSkill] = useState("");
   const [level, setLevel] = useState("");
   const [certificate, setCertificate] = useState("");
@@ -18,9 +18,7 @@ export function SkillsForm({ cvData, setCvData, setSkillData }: SkillProps) {
         }
     const fetchNewSkill = async ()=>{
     const res = await api.post(`/skill/${cvData.id}`, {skill_name: skill, ability_level: level, certificate})
-    console.log(res)
-    setSkillData({
-       id:res.data.id, skill_name: skill, ability_level: level, certificate, certified}) 
+    onTrigger(`Berhasil Tambah Data Skill ${res.data.data.skill_name}`) 
     };
     fetchNewSkill()
     setSkill("");

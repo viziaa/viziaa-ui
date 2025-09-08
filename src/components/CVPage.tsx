@@ -2,7 +2,7 @@
 import api from "@/services/api";
 import { CVPageProps } from "@/types/cv-type";
 import { useEffect, useState } from "react";
-import { CVPreview2 } from "./cv-preview";
+import { CVPreview2, CVPreview3, CVPreview1 } from "./cv-preview";
 import { CVToolbar } from "./cv-toolbar";
 import CvStepper from "./form-section/form-trigger";
 
@@ -16,6 +16,7 @@ export default function CVPage({ cv_id }: CVProps) {
     name: "Nama Anda",
     font: "",
     color: "#d51a52",
+    desain: 1,
     user: {
       id: "0",
       email: "",
@@ -35,6 +36,46 @@ export default function CVPage({ cv_id }: CVProps) {
     additions: [],
   });
 
+  const renderCVPreview = () => {
+    switch (cvData.desain) {
+      case 1:
+        return (
+          <CVPreview1
+            cvData={cvData}
+            setCvData={setCvData}
+            onTrigger={onTrigger}
+          />
+        );
+      case 2:
+        return (
+          <CVPreview2
+            cvData={cvData}
+            setCvData={setCvData}
+            onTrigger={onTrigger}
+          />
+        );
+
+       case 3:
+        return (
+          <CVPreview3
+            cvData={cvData}
+            setCvData={setCvData}
+            onTrigger={onTrigger}
+          />
+        );
+      // kalau ada desain tambahan
+      // case 3: return <CVPreview3 ... />
+      default:
+        return (
+          <CVPreview1
+            cvData={cvData}
+            setCvData={setCvData}
+            onTrigger={onTrigger}
+          />
+        );
+    }
+  };
+
   useEffect(() => {
     fetchUser();
   }, []);
@@ -53,6 +94,7 @@ export default function CVPage({ cv_id }: CVProps) {
           name: selectedCv.name || cvData.name,
           font: selectedCv.font || cvData.font,
           color: selectedCv.color || cvData.color,
+          desain: selectedCv.desain ?? cvData.desain,
           user: user,
           education: selectedCv.education || [],
           work_experiences: selectedCv.work_experiences || [],
@@ -65,42 +107,10 @@ export default function CVPage({ cv_id }: CVProps) {
     }
   };
 
-  const [userData, setUserData] = useState([]);
-  const [educationData, setEducationData] = useState([]);
-  const [experiencesData, setExperiencesData] = useState([]);
-  const [skillData, setSkillData] = useState([]);
-  const [additionData, setAdditionData] = useState([]);
-
-  useEffect(() => {
-    if (userData.length === 0) return;
-    fetchUser();
-    alert("berhasil simpan data user");
-  }, [userData]);
-
-  useEffect(() => {
-    if (educationData.length === 0) return;
-    fetchUser();
-    alert("berhasil tambahkan data education");
-  }, [educationData]);
-
-  useEffect(() => {
-    if (experiencesData.length === 0) return;
-    fetchUser();
-    alert("berhasil tambahkan data experience");
-  }, [experiencesData]);
-
-  useEffect(() => {
-    if (skillData.length === 0) return;
-    fetchUser();
-    alert("berhasil tambahkan data skill");
-  }, [skillData]);
-
-  useEffect(() => {
-    if (additionData.length === 0) return;
-    fetchUser();
-    alert("berhasil tambahkan data tambahan");
-  }, [additionData]);
-
+   function onTrigger(text:string){
+    fetchUser()
+    alert(text)
+   }
   return (
     <div className="grid grid-cols-2 gap-4 p-6 bg-white min-h-screen">
       {/* Kiri: Form */}
@@ -109,23 +119,14 @@ export default function CVPage({ cv_id }: CVProps) {
         <CvStepper
           cvData={cvData}
           setCvData={setCvData}
-          setUserData={setUserData}
-          setEducationData={setEducationData}
-          setExperiencesData={setExperiencesData}
-          setSkillData={setSkillData}
-          setAdditionData={setAdditionData}
+          onTrigger={onTrigger}
         />
       </div>
 
       {/* Kanan: Preview */}
       <div className="flex flex-col space-y-4">
         <CVToolbar cvData={cvData} setCvData={setCvData} />
-        <CVPreview2
-          cvStyle="rounded-xl shadow-lg"
-          cvData={cvData}
-          setCvData={setCvData}
-          setEducationData={setEducationData}
-        />
+        {renderCVPreview()}
       </div>
     </div>
   );

@@ -1,17 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import api from "@/services/api";
-import { CVPageProps, EducationItem, UserItem } from "@/types/cv-type";
+import { EditUserDialogProps } from "@/types/cv-type";
 
-interface UserDialogProps {
- cvData: CVPageProps
- setUserData:({id, email, nickname, fullname, address, city, region, birthdate, phone, about, avatar}: UserItem) => void
-}
 
-export function UserDialog({ cvData, setUserData }:UserDialogProps) {
+export function UserDialog({ cvData, onTrigger }:EditUserDialogProps) {
     const [email, setEmail] = useState("");
     const [nickname, setNickname] = useState("");
     const [fullname, setFullname] = useState("");
@@ -72,7 +68,7 @@ export function UserDialog({ cvData, setUserData }:UserDialogProps) {
         headers: { "Content-Type": "multipart/form-data" }
       });
 
-      setUserData(res.data)
+      onTrigger(`edit data user ${res.data.data.nickname} Berhasil`)
      
     } catch (err) {
       console.error("Error save education", err);
@@ -173,9 +169,11 @@ export function UserDialog({ cvData, setUserData }:UserDialogProps) {
             />
         </div>
         <DialogFooter>
-          <Button onClick={handleSave} disabled={loading}>
-            {loading ? "Menyimpan..." : "Simpan"}
-            </Button>
+          <DialogClose asChild>
+              <Button onClick={handleSave} disabled={loading}>
+                {loading ? "Menyimpan..." : "Simpan"}
+              </Button>
+           </DialogClose>
         </DialogFooter>
       </DialogContent>
   );

@@ -1,16 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import api from "@/services/api";
-import { CVPageProps, EducationItem } from "@/types/cv-type";
+import { EditDialogProps } from "@/types/cv-type";
 
-interface EducationDialogProps {
- cvData: CVPageProps
- id:string
- setEducationData:({id, education_level, school_name, school_address, date_in, date_out}: EducationItem)=> void
-}
+
 
 function formatDateForInput(date: string | Date | null | undefined): string {
   if (!date) return "";
@@ -18,9 +14,10 @@ function formatDateForInput(date: string | Date | null | undefined): string {
   return isNaN(d.getTime()) ? "" : d.toISOString().split("T")[0];
 }
 
-export function EducationDialog({ cvData, id, setEducationData }:EducationDialogProps) {
+export function EducationDialog({ cvData, id, onTrigger }: EditDialogProps) {
   const [school, setSchool] = useState("");
   const [level, setLevel] = useState("");
+  const [major, setMajor] = useState<string |null>("")
   const [address, setAddress] = useState("");
   const [dateIn, setDateIn] = useState("");
   const [dateOut, setDateOut] = useState("");
@@ -31,6 +28,7 @@ export function EducationDialog({ cvData, id, setEducationData }:EducationDialog
     if(!edu) return
         setSchool(edu.school_name)
         setLevel(edu.education_level)
+        setMajor(edu.major)
         setAddress(edu.school_address)
         setDateIn(formatDateForInput(edu.date_in));
         setDateOut(formatDateForInput(edu.date_out));
@@ -42,12 +40,13 @@ export function EducationDialog({ cvData, id, setEducationData }:EducationDialog
       const res = await api.put(`/educations/${id}`, {
         education_level: level,
         school_name: school,
+        major,
         school_address: address,
         date_in: new Date(dateIn),
         date_out: new Date(dateOut),
       });
-
-      setEducationData(res.data)
+      console.log(res.data)
+      onTrigger(`Berhasil Edit Data Pendidikan ${res.data.data.education_level}`)
      
     } catch (err) {
       console.error("Error save education", err);
@@ -77,6 +76,14 @@ export function EducationDialog({ cvData, id, setEducationData }:EducationDialog
                 <option value="s2 / magister">S2 / magister</option>
                 <option value="s3 / doktor">S3 / doktor</option>
         </select>
+          {["sma", "s1 / sarjana", "s2 / magister", "s3 / doktor"].includes(level?.toLowerCase())  &&
+          <input
+            type="text"
+            placeholder="Jurusan"
+            className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+            value={major ?? ""}
+            onChange={(e) => setMajor(e.target.value)}
+          />}
           <input
             type="text"
             placeholder="Nama Sekolah"
@@ -109,9 +116,11 @@ export function EducationDialog({ cvData, id, setEducationData }:EducationDialog
          
           
         <DialogFooter>
-          <Button onClick={handleSave} disabled={loading}>
-            {loading ? "Menyimpan..." : "Simpan"}
-            </Button>
+           <DialogClose asChild>
+              <Button onClick={handleSave} disabled={loading}>
+                {loading ? "Menyimpan..." : "Simpan"}
+              </Button>
+           </DialogClose>
         </DialogFooter>
       </DialogContent>
   );

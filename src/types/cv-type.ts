@@ -1,6 +1,8 @@
 export interface ExperienceItem {
   id: string;
   corporate: string;
+  position: string;
+  jobdesk:string;
   date_in: Date;
   date_out: Date;
   isDraft?: false | true;
@@ -29,6 +31,7 @@ export interface AdditionItem {
 export interface EducationItem {
   id: string;
   education_level: string;
+  major: string | null;
   school_name: string;
   school_address: string;
   date_in: Date;
@@ -50,6 +53,7 @@ export interface CVPageProps {
   name: string;
   font: string;
   color: string;
+  desain: number | null;
   user: UserItem;
   education: EducationItem[];
   work_experiences: ExperienceItem[];
@@ -57,62 +61,73 @@ export interface CVPageProps {
   additions: AdditionItem[];
 }
 
-export interface AdditionsProps {
+export interface FormProps {
   cvData: CVPageProps;
-  setAdditionData: ({ id, question, answer }: AdditionItem) => void;
+  onTrigger: (value: string) => void;
   setCvData: React.Dispatch<React.SetStateAction<CVPageProps>>;
 }
 
-export interface EducationProps {
-  cvData: CVPageProps;
-  setEducationData: ({
-    id,
-    education_level,
-    school_name,
-    school_address,
-    date_in,
-    date_out,
-  }: EducationItem) => void;
-  setCvData: React.Dispatch<React.SetStateAction<CVPageProps>>;
+export interface EditDialogProps {
+ cvData: CVPageProps
+ id:string
+ onTrigger: (value: string) => void;
 }
 
-export interface SkillProps {
-  cvData: CVPageProps;
-  setSkillData: ({
-    id,
-    skill_name,
-    ability_level,
-    certificate,
-    certified,
-  }: SkillItem) => void;
-  setCvData: React.Dispatch<React.SetStateAction<CVPageProps>>;
+export interface EditUserDialogProps {
+ cvData: CVPageProps
+ onTrigger: (value: string) => void;
 }
 
-export interface ExperienceProps {
-  cvData: CVPageProps;
-  setExperiencesData: ({
-    id,
-    corporate,
-    date_in,
-    date_out,
-  }: ExperienceItem) => void;
-  setCvData: React.Dispatch<React.SetStateAction<CVPageProps>>;
-}
+// export interface EducationProps {
+//   cvData: CVPageProps;
+//   setEducationData: ({
+//     id,
+//     education_level,
+//     school_name,
+//     school_address,
+//     date_in,
+//     date_out,
+//   }: EducationItem) => void;
+//   setCvData: React.Dispatch<React.SetStateAction<CVPageProps>>;
+// }
 
-export interface UserProps {
-  cvData: CVPageProps;
-  setUserData: ({
-    id,
-    email,
-    nickname,
-    fullname,
-    address,
-    city,
-    region,
-    birthdate,
-    phone,
-    about,
-    avatar,
-  }: UserItem) => void;
-  setCvData: React.Dispatch<React.SetStateAction<CVPageProps>>;
-}
+// export interface SkillProps {
+//   cvData: CVPageProps;
+//   setSkillData: ({
+//     id,
+//     skill_name,
+//     ability_level,
+//     certificate,
+//     certified,
+//   }: SkillItem) => void;
+//   setCvData: React.Dispatch<React.SetStateAction<CVPageProps>>;
+// }
+
+// export interface ExperienceProps {
+//   cvData: CVPageProps;
+//   setExperiencesData: ({
+//     id,
+//     corporate,
+//     date_in,
+//     date_out,
+//   }: ExperienceItem) => void;
+//   setCvData: React.Dispatch<React.SetStateAction<CVPageProps>>;
+// }
+
+// export interface UserProps {
+//   cvData: CVPageProps;
+//   setUserData: ({
+//     id,
+//     email,
+//     nickname,
+//     fullname,
+//     address,
+//     city,
+//     region,
+//     birthdate,
+//     phone,
+//     about,
+//     avatar,
+//   }: UserItem) => void;
+//   setCvData: React.Dispatch<React.SetStateAction<CVPageProps>>;
+// }
