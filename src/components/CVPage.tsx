@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { CVPreview1, CVPreview2, CVPreview3 } from "./cv-preview";
 import { CVToolbar } from "./cv-toolbar";
 import CvStepper from "./form-section/form-trigger";
+import Swal from "sweetalert2";
 
 type CVProps = {
   cv_id: string;
@@ -109,24 +110,40 @@ export default function CVPage({ cv_id }: CVProps) {
 
   function onTrigger(text: string) {
     fetchUser();
-    alert(text);
+    Swal.fire({
+      icon: "success",
+      title: "Success",
+      text: text,
+      timer: 2000,
+      showConfirmButton: false,
+    });
   }
   return (
-    <div className="grid grid-cols-2 gap-4 p-6 bg-white min-h-screen">
-      {/* Kiri: Form */}
-      <div className="space-y-4">
-        <h2 className="text-xl font-bold text-blue-800">Isi Data CV</h2>
-        <CvStepper
-          cvData={cvData}
-          setCvData={setCvData}
-          onTrigger={onTrigger}
-        />
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        {/* Kiri: Form */}
+        <div className="space-y-4 sm:space-y-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-800 bg-white p-3 sm:p-4 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+            Isi Data CV
+          </h2>
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <CvStepper
+              cvData={cvData}
+              setCvData={setCvData}
+              onTrigger={onTrigger}
+            />
+          </div>
+        </div>
 
-      {/* Kanan: Preview */}
-      <div className="flex flex-col space-y-4">
-        <CVToolbar cvData={cvData} setCvData={setCvData} />
-        {renderCVPreview()}
+        {/* Kanan: Preview */}
+        <div className="flex flex-col space-y-4 sm:space-y-6">
+          <div className="bg-white p-3 sm:p-4 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <CVToolbar cvData={cvData} setCvData={setCvData} />
+          </div>
+          <div className="bg-white p-3 sm:p-4 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+            {renderCVPreview()}
+          </div>
+        </div>
       </div>
     </div>
   );

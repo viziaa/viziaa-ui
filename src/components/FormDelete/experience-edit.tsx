@@ -21,7 +21,7 @@ export function ExperienceDeleteDialog({ id, onDelete }: Props) {
   const handleDelete = async () => {
     try {
       setLoading(true);
-      await api.delete(`/educations/${id}`);
+      await api.delete(`/experiences/${id}`);
 
       onDelete(id);
     } catch (err) {
@@ -32,7 +32,7 @@ export function ExperienceDeleteDialog({ id, onDelete }: Props) {
   };
 
   return (
-    <DialogContent>
+    <DialogContent className="bg-white">
       <DialogHeader>
         <DialogTitle>Hapus Data Riwayat Pekerjaan</DialogTitle>
       </DialogHeader>

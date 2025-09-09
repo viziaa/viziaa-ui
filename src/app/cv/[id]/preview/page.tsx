@@ -1,5 +1,5 @@
 "use client";
-import { CVPreview2 } from "@/components/cv-preview";
+import { CVPreview2, CVPreview1, CVPreview3 } from "@/components/cv-preview";
 import api from "@/services/api";
 import { CVPageProps } from "@/types/cv-type";
 import { useParams } from "next/navigation";
@@ -55,6 +55,7 @@ export default function CVPage() {
           name: selectedCv.name || cvData.name,
           font: selectedCv.font || cvData.font,
           color: selectedCv.color || cvData.color,
+          desain: selectedCv.desain || cvData.desain,
           user: user,
           education: selectedCv.education || [],
           work_experiences: selectedCv.work_experiences || [],
@@ -67,9 +68,51 @@ export default function CVPage() {
     }
   };
 
+  const renderCVPreview = () => {
+      switch (cvData.desain) {
+        case 1:
+          return (
+            <CVPreview1
+              cvData={cvData}
+              setCvData={setCvData}
+              onTrigger={onTrigger}
+            />
+          );
+        case 2:
+          return (
+            <CVPreview2
+              cvData={cvData}
+              setCvData={setCvData}
+              onTrigger={onTrigger}
+            />
+          );
+  
+        case 3:
+          return (
+            <CVPreview3
+              cvData={cvData}
+              setCvData={setCvData}
+              onTrigger={onTrigger}
+            />
+          );
+        // kalau ada desain tambahan
+        // case 3: return <CVPreview3 ... />
+        default:
+          return (
+            <CVPreview1
+              cvData={cvData}
+              setCvData={setCvData}
+              onTrigger={onTrigger}
+            />
+          );
+      }
+    };
+
+    const onTrigger=(value:string)=>(value)
+
   return (
     <div className="bg-gray-100 flex items-center justify-center">
-      <CVPreview2 cvData={cvData} setEducationData={() => {}} />
+      {renderCVPreview()}
     </div>
   );
 }

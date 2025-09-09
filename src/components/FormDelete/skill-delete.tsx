@@ -32,7 +32,7 @@ export function SkillDeleteDialog({ id, onDelete }: Props) {
   };
 
   return (
-    <DialogContent>
+    <DialogContent className="bg-white">
       <DialogHeader>
         <DialogTitle>Hapus Data Skill</DialogTitle>
       </DialogHeader>

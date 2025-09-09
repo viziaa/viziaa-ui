@@ -78,89 +78,89 @@ export function UserDialog({ cvData, onTrigger }:EditUserDialogProps) {
   };
 
   return (
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md max-h-[80vh] overflow-auto bg-white p-6 rounded-lg shadow-lg">
         <DialogHeader>
-          <DialogTitle>Edit data Pendidikan</DialogTitle>
+          <DialogTitle className="text-black font-semibold">Edit User</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-2">
-          <label htmlFor="email" className=" mt-2 ml-2 text-gray-400"> Email </label>
+          <label htmlFor="email" className=" mt-2 ml-2 text-black"> Email </label>
           <input
             type="email"
             placeholder="Email"
-            className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+            className="w-full p-2 mt-2 border border-gray-300 rounded-lg text-black hover:text-black focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:shadow-md"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <label htmlFor="nickname" className=" mt-2 ml-2 text-gray-400"> Nickname </label>
+          <label htmlFor="nickname" className=" mt-2 ml-2 text-black"> Nickname </label>
           <input
             type="text"
             placeholder="Nickname"
-            className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+            className="w-full p-2 mt-2 border border-gray-300 rounded-lg text-black hover:text-black focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:shadow-md"
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
           />
-          <label htmlFor="fullname" className=" mt-2 ml-2 text-gray-400"> Fullname </label>
+          <label htmlFor="fullname" className=" mt-2 ml-2 text-black"> Fullname </label>
           <input
             type="text"
             placeholder="Fullname"
-            className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+            className="w-full p-2 mt-2 border border-gray-300 rounded-lg text-black hover:text-black focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:shadow-md"
             value={fullname}
             onChange={(e) => setFullname(e.target.value)}
           />
-          <label htmlFor="address" className=" mt-2 ml-2 text-gray-400"> Address </label>
+          <label htmlFor="address" className=" mt-2 ml-2 text-black"> Address </label>
           <input
             type="text"
             placeholder="Address"
-            className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+            className="w-full p-2 mt-2 border border-gray-300 rounded-lg text-black hover:text-black focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:shadow-md"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
-          <label htmlFor="avatar" className=" mt-2 ml-2 text-gray-400"> City </label>
+          <label htmlFor="avatar" className=" mt-2 ml-2 text-black"> City </label>
           <input
             type="text"
             placeholder="city"
-            className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+            className="w-full p-2 mt-2 border border-gray-300 rounded-lg text-black hover:text-black focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:shadow-md"
             value={city}
             onChange={(e) => setCity(e.target.value)}
           />
-          <label htmlFor="region" className=" mt-2 ml-2 text-gray-400"> Region </label>
+          <label htmlFor="region" className=" mt-2 ml-2 text-black"> Region </label>
           <input
             type="text"
             placeholder="Region"
-            className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+            className="w-full p-2 mt-2 border border-gray-300 rounded-lg text-black hover:text-black focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:shadow-md"
             value={region}
             onChange={(e) => setRegion(e.target.value)}
           />
-          <label htmlFor="birthdate" className=" mt-2 ml-2 text-gray-400"> Birthdate </label>
+          <label htmlFor="birthdate" className=" mt-2 ml-2 text-black"> Birthdate </label>
           <input
             type="date"
-            className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+            className="w-full p-2 mt-2 border border-gray-300 rounded-lg text-black hover:text-black focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:shadow-md"
             value={birthdate}
             onChange={(e) => setBirthdate(new Date (e.target.value).toISOString().split("T")[0])}
           />
-          <label htmlFor="phone" className=" mt-2 ml-2 text-gray-400"> Phone </label>
+          <label htmlFor="phone" className=" mt-2 ml-2 text-black"> Phone </label>
           <input
             type="number"
             placeholder="Phone"
-            className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+            className="w-full p-2 mt-2 border border-gray-300 rounded-lg text-black hover:text-black focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:shadow-md"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
-          <label htmlFor="about" className=" mt-2 ml-2 text-gray-400"> About </label>
+          <label htmlFor="about" className=" mt-2 ml-2 text-black"> About </label>
           <textarea
             placeholder="About"
-            className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+            className="w-full p-2 mt-2 border border-gray-300 rounded-lg text-black hover:text-black focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:shadow-md"
             value={about}
             onChange={(e) => setAbout(e.target.value)}
           />
-          <label htmlFor="avatar" className=" mt-2 ml-3 text-gray-400"> Avatar </label>
+          <label htmlFor="avatar" className=" mt-2 ml-3 text-black"> Avatar </label>
             {avatar && <img src={avatar} className="h-20 w-20 rounded-2xl" />}
             <input
                 type="file"
                 name="avatar"
                 accept="image/*"
-                className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+                className="w-full p-2 mt-2 border border-gray-300 rounded-lg text-black hover:text-black focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:shadow-md"
                 onChange={(e) =>  { const file = e.target.files?.[0] || null;
                     setAvatarFile(file);
                     setAvatar(file ? URL.createObjectURL(file) : avatar)

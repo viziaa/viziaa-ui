@@ -78,7 +78,7 @@ export function UserForm({ cvData, onTrigger, setCvData }:FormProps) {
       <input
         type="email"
         placeholder="Email"
-        className="w-full p-2 mt-2 border text-gray-400 hover:text-black rounded"
+        className="w-full p-2 mt-2 border border-gray-300 rounded-lg text-gray-400 hover:text-black focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:shadow-md"
         value={email}
         onChange={(e) => setCvData((prev) => ({...prev, user:{ ...prev.user, email: e.target.value}}))}
       />

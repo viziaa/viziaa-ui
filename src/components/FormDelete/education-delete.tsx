@@ -32,7 +32,7 @@ export function EducationDeleteDialog({ id, onDelete }: Props) {
   };
 
   return (
-    <DialogContent>
+    <DialogContent className="bg-white">
       <DialogHeader>
         <DialogTitle>Hapus Data Pendidikan</DialogTitle>
       </DialogHeader>

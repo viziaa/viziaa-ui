@@ -56,7 +56,7 @@ export function EducationDialog({ cvData, id, onTrigger }: EditDialogProps) {
   };
 
   return (
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md bg-white">
         <DialogHeader>
           <DialogTitle>Edit data Pendidikan</DialogTitle>
         </DialogHeader>

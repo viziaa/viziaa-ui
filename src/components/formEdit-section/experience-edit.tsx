@@ -56,9 +56,9 @@ export function ExperienceDialog({ cvData, id, onTrigger }:EditDialogProps) {
   };
 
   return (
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md bg-white">
         <DialogHeader>
-          <DialogTitle>Edit data Pendidikan</DialogTitle>
+          <DialogTitle>Edit data Pengalaman Kerja</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-2">

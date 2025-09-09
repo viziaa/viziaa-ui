@@ -23,7 +23,7 @@ export default function CvStepper({ cvData, setCvData, onTrigger  }: FormProps) 
     { id: 2, label: "Pendidikan", component: <EducationForm cvData={cvData} setCvData={setCvData} onTrigger={onTrigger} /> },
     { id: 3, label: "Pengalaman Kerja", component: <WorkExperienceForm cvData={cvData} setCvData={setCvData} onTrigger={onTrigger}/> },
     { id: 4, label: "Skill", component: <SkillsForm cvData={cvData} setCvData={setCvData} onTrigger={onTrigger} /> },
-    { id: 5, label: "Lainnya", component: <AdditionForm cvData={cvData}  onTrigger={onTrigger} setCvData={setCvData} /> },
+    // { id: 5, label: "Lainnya", component: <AdditionForm cvData={cvData}  onTrigger={onTrigger} setCvData={setCvData} /> },
     // { id: 4, label: "Organisasi", component: <WorkExperienceForm cvData={cvData} setCvData={setCvData} /> },
   ];
  
@@ -39,8 +39,8 @@ export default function CvStepper({ cvData, setCvData, onTrigger  }: FormProps) 
           >
             {/* Circle */}
             <div
-              className={`flex items-center justify-center w-10 h-10 rounded-full z-10
-                ${activeStep === step.id ? "bg-blue-600 text-white" : "bg-gray-300 text-gray-700"}
+              className={`flex items-center justify-center w-10 h-10 rounded-full z-10 transition-all duration-300 hover:scale-110 hover:shadow-lg cursor-pointer
+                ${activeStep === step.id ? "bg-indigo-600 text-white" : "bg-gray-300 text-gray-700 hover:bg-indigo-200"}
               `}
             >
               {step.id}
