@@ -139,9 +139,6 @@ export default function HistoryPage() {
               <h3 className="text-lg sm:text-xl font-semibold text-gray-800">
                 Riwayat CV Anda
               </h3>
-              <div className="text-xs sm:text-sm text-gray-500">
-                Total: CV yang telah dibuat
-              </div>
             </div>
 
             <CVCard />
