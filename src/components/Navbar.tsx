@@ -1,16 +1,16 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import Swal from "sweetalert2";
-import { useRouter } from "next/navigation";
 import api from "@/services/api"; // pastikan kamu punya instance axios di sini
-import React, { useEffect, useState } from "react";
 import { UserItem } from "@/types/cv-type";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 export default function Navbar() {
-  const [user, setUser] = useState<UserItem | null>(null)
+  const [user, setUser] = useState<UserItem | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
   useEffect(() => {
@@ -46,8 +46,6 @@ export default function Navbar() {
     fetchuser();
   }, []);
 
-  
-
   const handleLogout = async () => {
     Swal.fire({
       title: "Are you sure?",
@@ -71,7 +69,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="relative flex items-center justify-between bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-900 px-6 py-4 shadow-xl backdrop-blur-sm border-b border-indigo-700/50 z-50">
+    <nav className="relative flex items-center justify-between bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-900 px-6 lg:px-14 py-4 shadow-xl backdrop-blur-sm border-b border-indigo-700/50 z-50">
       {/* Logo */}
       <Link href={""} className="group">
         <div className="flex items-center space-x-3 hover:scale-105 transition-all duration-300">
@@ -93,28 +91,10 @@ export default function Navbar() {
 
       {/* Desktop Menu */}
       <div className="hidden md:flex items-center gap-8">
-        <ul className="flex space-x-6 text-white font-medium">
+        <ul className="flex space-x-6 text-white font-medium items-center">
           <li>
             <Link
               href="/"
-              className="relative px-3 py-2 rounded-lg hover:bg-indigo-700/50 hover:text-indigo-100 transition-all duration-300 group"
-            >
-              <span className="relative z-10">Home</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/0 to-indigo-600/0 group-hover:from-indigo-600/20 group-hover:to-purple-600/20 rounded-lg transition-all duration-300"></div>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/about"
-              className="relative px-3 py-2 rounded-lg hover:bg-indigo-700/50 hover:text-indigo-100 transition-all duration-300 group"
-            >
-              <span className="relative z-10">About</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/0 to-indigo-600/0 group-hover:from-indigo-600/20 group-hover:to-purple-600/20 rounded-lg transition-all duration-300"></div>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/history"
               className="relative px-3 py-2 rounded-lg hover:bg-indigo-700/50 hover:text-indigo-100 transition-all duration-300 group"
             >
               <span className="relative z-10">My CV</span>
@@ -127,18 +107,17 @@ export default function Navbar() {
         <div className="flex items-center gap-4 ml-6">
           <div className="relative group">
             <div className="relative group">
-                {user ? (
-                  <img
-                      src={user.avatar || "/default-avatar.png"}
-                      alt=""
-                      className="w-10 h-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 cursor-pointer ring-2 ring-white/20 hover:ring-white/40"
-                    />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-gray-700 animate-pulse" />
-                )}
-              </div>
-            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-indigo-900 shadow-sm">
+              {user ? (
+                <img
+                  src={user.avatar || "/default-avatar.png"}
+                  alt=""
+                  className="w-10 h-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 cursor-pointer ring-2 ring-white/20 hover:ring-white/40"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-gray-700 animate-pulse" />
+              )}
             </div>
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-indigo-900 shadow-sm"></div>
           </div>
           <button
             onClick={handleLogout}
@@ -196,10 +175,10 @@ export default function Navbar() {
                 <div className="relative group">
                   {user ? (
                     <img
-                        src={user.avatar || "/default-avatar.png"}
-                        alt=""
-                        className="w-8 h-8 rounded-full shadow-lg ring-2 ring-white/20"
-                      />
+                      src={user.avatar || "/default-avatar.png"}
+                      alt=""
+                      className="w-8 h-8 rounded-full shadow-lg ring-2 ring-white/20"
+                    />
                   ) : (
                     <div className="w-8 h-8 rounded-full bg-gray-700 animate-pulse" />
                   )}
